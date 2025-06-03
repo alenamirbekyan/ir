@@ -76,6 +76,8 @@ def genererGraphe(niveau, nbPoint):
         for sommet in range(endNiv, endNiv+nbSommets):
             sn = g[sommet]
             nbconnection = randint(1, endNiv - startNiv)
+            if(nbconnection > 3):
+                nbconnection = 3
             # sn.text = nbconnection
             for i in range(nbconnection):
                 sn1 = g[randint(startNiv, endNiv-1)]

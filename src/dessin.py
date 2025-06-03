@@ -13,7 +13,7 @@ t.speed(0)
 
 win = turtle.Screen()
 win.setup(600, 600)
-win.tracer(0)
+win.tracer(0, 0)
 
 
 def lighten_color(color_name, factor=0.5):
@@ -31,7 +31,9 @@ def lighten_color(color_name, factor=0.5):
 def draw_sensor(sensor):
     t.teleport(coordonnees[sensor][0] - 10, coordonnees[sensor][1] - 16.8)
     t.color(sensor.color)
+    print(sensor.color)
     t.setheading(0)
+    t.fillcolor(sensor.color)
     t.fillcolor(lighten_color(sensor.color))
     t.begin_fill()
     for i in range(6):
@@ -63,12 +65,9 @@ def clear():
 
 colors = ["red", "blue", "black", "green"]
 
-g = genererGraphe(4, 4)
-
 # print(courtChemain(sommets[0]))
 
 def generer():
-    # clear()
     voisins = []
     global t
     t.clear()
@@ -90,15 +89,19 @@ def generer():
 
     for k in coordonnees.keys():
         for v in k.get_voisins():
-            if not (v,s) in voisins:
-                voisins.append((s,v))
-                draw_line(s, v, "")
+            if not (v,k) in voisins:
+                voisins.append((k,v))
+                draw_line(k, v, "")
         for v in k.get_parent():
-            if not (v,s) in voisins:
-                voisins.append((s,v))
-                draw_line(s, v, "")
-        draw_sensor(k)
+            if not (v,k) in voisins:
+                voisins.append((k,v))
+                draw_line(k, v, "")
 
+    for k in coordonnees.keys():
+        draw_sensor(k)
+    win.update()
+
+generer()
     
 coordonnees = {}
 
@@ -107,6 +110,4 @@ turtle.listen()
 # turtle.onkeypress(generer, "space")
 turtle.onkeypress(generer, "Return")
 
-while True:
-
-    win.update()
+turtle.mainloop()
