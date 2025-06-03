@@ -1,8 +1,9 @@
+import math
 import time
 import turtle as turtle
 from random import randint
 
-from sommet import genererGraphe, Sommet
+from sommet import genererGraphe, Sommet, courtChemain
 
 t = turtle.Turtle()
 t.ht()
@@ -28,7 +29,7 @@ def lighten_color(color_name, factor=0.5):
     return '#%02x%02x%02x' % tuple(light_rgb)
 
 def draw_sensor(sensor):
-    t.teleport(sensor.x - 10, sensor.y - 16.8)
+    t.teleport(coordonnees[sensor][0] - 10, coordonnees[sensor][1] - 16.8)
     t.color(sensor.color)
     t.setheading(0)
     t.fillcolor(lighten_color(sensor.color))
@@ -40,61 +41,72 @@ def draw_sensor(sensor):
 
 
 def draw_line(sensor1, sensor2, text, couleur="black"):
-    t.teleport(sensor1.x, sensor1.y)
+    t.teleport(coordonnees[sensor1][0], coordonnees[sensor1][1])
     t.color(couleur)
-    t.goto(sensor2.x, sensor2.y)
-    distanceX = (sensor2.x + sensor1.x) / 2
-    distanceY = (sensor2.y + sensor1.y) / 2
+    t.goto(coordonnees[sensor2][0], coordonnees[sensor2][1])
+    distanceX = (coordonnees[sensor2][0] + coordonnees[sensor1][0]) / 2
+    distanceY = (coordonnees[sensor2][1] + coordonnees[sensor1][1]) / 2
     t.teleport(distanceX, distanceY)
     t.write(text, align="center")
 
 def clear():
-    t.teleport(-400, -400)
+    t.teleport(-800, -800)
     t.color("white")
     t.setheading(0)
     t.fillcolor("white")
     t.begin_fill()
     for i in range(4):
-        t.forward(800)
+        t.forward(1600)
         t.left(90)
     t.end_fill()
-
-# sommets = []
-#
-# s1 = Sommet(0, 0)
-#
-# s2 = Sommet(60, 0)
-#
-# s1.add_voisin(s2)
-#
-# sommets.append(s1)
-# sommets.append(s2)
 
 
 colors = ["red", "blue", "black", "green"]
 
-sommets = genererGraphe(4)
+g = genererGraphe(4, 4)
+
+# print(courtChemain(sommets[0]))
 
 def generer():
-    global sommets
-    sommets = genererGraphe(4)
-
-while True:
-
-    clear()
-    turtle.listen()
-
-    # turtle.onkeypress(generer, "space")
-    turtle.onkeypress(generer, "Return")
-
+    # clear()
     voisins = []
+    global t
+    t.clear()
+    global g
+    g = genererGraphe(6, 7)
+    global coordonnees
+    coordonnees = {}
+    niv = math.inf
+    nbElemNiveau = 0
+    i = 0
+    for s in g.sommets:
+        if niv == s.niveau:
+            i+=1
+        else:
+            i=0
+            niv = s.niveau
+            nbElemNiveau = g.nbElemNiv(niv)
+        coordonnees[s] = -600 + 1200/(nbElemNiveau+1) * (i+1), 200 - 80*(niv)
 
-    for s in sommets:
-        for v in s.get_voisins():
+    for k in coordonnees.keys():
+        for v in k.get_voisins():
             if not (v,s) in voisins:
                 voisins.append((s,v))
                 draw_line(s, v, "")
-        draw_sensor(s)
+        for v in k.get_parent():
+            if not (v,s) in voisins:
+                voisins.append((s,v))
+                draw_line(s, v, "")
+        draw_sensor(k)
 
+    
+coordonnees = {}
+
+turtle.listen()
+
+# turtle.onkeypress(generer, "space")
+turtle.onkeypress(generer, "Return")
+
+while True:
 
     win.update()
