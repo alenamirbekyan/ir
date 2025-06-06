@@ -1,0 +1,182 @@
+{
+    "nombre": 1,
+    "graphes": [
+        {
+            "sommet": [
+                {
+                    "num": 0,
+                    "niv": 0,
+                    "color": "blue",
+                    "parents": [],
+                    "voisins": [],
+                    "enfants": [
+                        1
+                    ]
+                },
+                {
+                    "num": 1,
+                    "niv": 1,
+                    "color": "green",
+                    "parents": [
+                        0
+                    ],
+                    "voisins": [],
+                    "enfants": [
+                        2,
+                        3,
+                        4
+                    ]
+                },
+                {
+                    "num": 2,
+                    "niv": 2,
+                    "color": "green",
+                    "parents": [
+                        1
+                    ],
+                    "voisins": [],
+                    "enfants": [
+                        5
+                    ]
+                },
+                {
+                    "num": 3,
+                    "niv": 2,
+                    "color": "green",
+                    "parents": [
+                        1
+                    ],
+                    "voisins": [],
+                    "enfants": [
+                        5,
+                        6
+                    ]
+                },
+                {
+                    "num": 4,
+                    "niv": 2,
+                    "color": "green",
+                    "parents": [
+                        1
+                    ],
+                    "voisins": [],
+                    "enfants": [
+                        6
+                    ]
+                },
+                {
+                    "num": 5,
+                    "niv": 3,
+                    "color": "green",
+                    "parents": [
+                        3,
+                        2
+                    ],
+                    "voisins": [
+                        6
+                    ],
+                    "enfants": [
+                        8
+                    ]
+                },
+                {
+                    "num": 6,
+                    "niv": 3,
+                    "color": "green",
+                    "parents": [
+                        4,
+                        3
+                    ],
+                    "voisins": [
+                        5
+                    ],
+                    "enfants": [
+                        7,
+                        8,
+                        9
+                    ]
+                },
+                {
+                    "num": 7,
+                    "niv": 4,
+                    "color": "blue",
+                    "parents": [
+                        6
+                    ],
+                    "voisins": [],
+                    "enfants": [
+                        11,
+                        12
+                    ]
+                },
+                {
+                    "num": 8,
+                    "niv": 4,
+                    "color": "green",
+                    "parents": [
+                        6,
+                        5
+                    ],
+                    "voisins": [
+                        9
+                    ],
+                    "enfants": [
+                        10,
+                        11
+                    ]
+                },
+                {
+                    "num": 9,
+                    "niv": 4,
+                    "color": "green",
+                    "parents": [
+                        6
+                    ],
+                    "voisins": [
+                        8
+                    ],
+                    "enfants": [
+                        11
+                    ]
+                },
+                {
+                    "num": 10,
+                    "niv": 5,
+                    "color": "green",
+                    "parents": [
+                        8
+                    ],
+                    "voisins": [],
+                    "enfants": []
+                },
+                {
+                    "num": 11,
+                    "niv": 5,
+                    "color": "green",
+                    "parents": [
+                        9,
+                        7,
+                        8
+                    ],
+                    "voisins": [
+                        12
+                    ],
+                    "enfants": []
+                },
+                {
+                    "num": 12,
+                    "niv": 5,
+                    "color": "green",
+                    "parents": [
+                        7
+                    ],
+                    "voisins": [
+                        11
+                    ],
+                    "enfants": []
+                }
+            ],
+            "name": "1"
+        }
+    ]
+}
