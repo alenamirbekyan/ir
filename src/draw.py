@@ -1,13 +1,17 @@
 import math
 import turtle as turtle
 import tkinter as TK
+
+from method.heuristic import Heuristique
+from method.sda import SDA
+
 from save import *
 
-
-from sommet import genererGraphe, Sommet, courtChemain
+from summit import genererGraphe, courtChemain
 
 size = 50
-
+method = Heuristique()
+# method = SDA()
 
 root = TK.Tk()
 root.attributes('-fullscreen', True)
@@ -21,18 +25,14 @@ t.speed(0)
 screen.tracer(0,0)
 t.hideturtle()
 
+g = None
+coordonnees = {}
 
 
 def lighten_color(color_name, factor=0.5):
-    # Récupérer le code RGB 0-65535 depuis le nom de couleur
-    rgb_16bit = rgb_16bit = root.winfo_rgb(color_name)
-    # Convertir en 0-255
+    rgb_16bit = root.winfo_rgb(color_name)
     rgb_8bit = [int(c / 65535 * 255) for c in rgb_16bit]
-
-    # Appliquer un éclaircissement vers le blanc
     light_rgb = [int(c + (255 - c) * factor) for c in rgb_8bit]
-
-    # Convertir en hexadécimal
     return '#%02x%02x%02x' % tuple(light_rgb)
 
 def draw_sensor(sensor):
@@ -49,8 +49,6 @@ def draw_sensor(sensor):
     t.fillcolor(sensor.color)
     t.teleport(coordonnees[sensor.num][0], coordonnees[sensor.num][1])
     t.write(sensor.num, align="center")
-
-
 
 def draw_line(sensor1, sensor2, text, couleur="black"):
     x1, y1 = coordonnees[sensor1.num]
@@ -72,25 +70,7 @@ def draw_line(sensor1, sensor2, text, couleur="black"):
 
         t.write(text, align="center")
 
-def clear():
-    t.teleport(-800, -800)
-    t.color("white")
-    t.setheading(0)
-    t.fillcolor("white")
-    t.begin_fill()
-    for i in range(4):
-        t.forward(1600)
-        t.left(90)
-    t.end_fill()
-
-
-colors = ["red", "blue", "black", "green"]
-
-g = None
-
-coordonnees = {}
-
-def generer(charge = False):
+def generate(charge = False):
     global t
     global g
     global coordonnees
@@ -99,7 +79,7 @@ def generer(charge = False):
     if(not charge):
         g = genererGraphe(size, 7)
     court_chemain = courtChemain(g, g.sommets[0], [], [])
-    g.resolution(court_chemain)
+    g.resolution(court_chemain, method)
 
 
     coordonnees = {}
@@ -143,30 +123,28 @@ def saveGraph():
     popup.title("Nom du graphe")
     popup.grab_set()
 
-    # Label et champ de saisie
     TK.Label(popup, text="Entrez un nom pour le graphe :").pack(padx=10, pady=10)
     name_entry = TK.Entry(popup)
     name_entry.pack(padx=10, pady=5)
 
-    def confirmer():
+    def confirm():
         global g
         nom = name_entry.get()
         if nom:
             save(g, nom)  # Appelle ta fonction de sauvegarde
             popup.destroy()
         else:
-            # Optionnel : afficher un message d'erreur si champ vide
             TK.messagebox.showwarning("Erreur", "Le nom ne peut pas être vide.")
 
-    TK.Button(popup, text="Enregistrer", command=confirmer).pack(pady=10)
+    TK.Button(popup, text="Enregistrer", command=confirm).pack(pady=10)
 
-def charger_graphe(i):
+def load_graph(i):
     global g
     g=load(i)
-    generer(True)
+    generate(True)
 
 
-def loadListe():
+def load_liste():
     popup = TK.Toplevel(root)
     popup.title("Sélection du graphe")
     popup.grab_set()
@@ -175,23 +153,21 @@ def loadListe():
     nb = loadNumber()
     for i in range(len(nb)):
         name = nb[i]
-        TK.Button(frame, text=f"Graphe {name}", command=lambda i=i: charger(i)).grid(row=i // 4, column=i % 4)
+        TK.Button(frame, text=f"Graphe {name}", command=lambda i=i: load(i)).grid(row=i // 4, column=i % 4)
 
-    def charger(i):
-        charger_graphe(i)
+    def load(i):
+        load_graph(i)
         popup.destroy()
 
-btn = TK.Button(root, text="Générer", command=generer)
+btn = TK.Button(root, text="Générer", command=generate)
 btn.grid(column=1, row=0)
 
 btnSave = TK.Button(root, text="Sauvegarder", command=saveGraph)
 btnSave.grid(column=0, row=0)
 
-btnLoad = TK.Button(root, text="Charger", command=loadListe)
+btnLoad = TK.Button(root, text="Charger", command=load_liste)
 btnLoad.grid(column=2, row=0)
 
-# Ton canvas en dessous par exemple
-# cv = turtle.ScrolledCanvas(root, width=1920, height=1080)
 cv.grid(column=0, row=1, columnspan=4)
 
 def on_mousewheel(event):
@@ -199,5 +175,5 @@ def on_mousewheel(event):
 
 cv.bind_all("<MouseWheel>", on_mousewheel)
 
-root.bind("<Return>", lambda event: generer())
+root.bind("<Return>", lambda event: generate())
 root.mainloop()

@@ -1,11 +1,11 @@
 import json
 
-from sommet import Graph, Sommet
+from summit import Graph, Sommet
 
 
 def save(g, name):
     if g is not None:
-        with open('saveFile.json', mode='r+') as file:
+        with open('save_file.json', mode='r+') as file:
             data = json.load(file)
             res = g.toString()
             new_graph = json.loads(res)
@@ -17,7 +17,7 @@ def save(g, name):
             file.truncate()
 
 def loadNumber():
-    with open('saveFile.json', mode='r') as file:
+    with open('save_file.json', mode='r') as file:
         data = json.load(file)
         res = []
         for i in range(data["nombre"]):
@@ -25,7 +25,7 @@ def loadNumber():
         return res
 
 def load(num):
-    with open('saveFile.json', mode='r') as file:
+    with open('save_file.json', mode='r') as file:
         data = json.load(file)
         res = []
         hauteur = data["graphes"][num]["hauteur"]

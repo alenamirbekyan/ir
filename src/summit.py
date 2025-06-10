@@ -9,10 +9,10 @@ class Graph:
         self.hauteur = hauteur
         self.bornInf()
 
-    def chargerGraph(self, fichier, ligne):
+    def load_graph(self, fichier, ligne):
         pass
 
-    def sauvgarderGraph(self, fichier):
+    def save_graph(self, fichier):
         pass
 
     def nbElemNiv(self, niv):
@@ -24,49 +24,8 @@ class Graph:
                 return res
         return res
 
-    def resolution(self, court):
-        nbEnf = {}
-        for s in self.sommets:
-            nbEnf[s.num] = len(s.get_enfant())*5 + len(s.get_voisins()) + len(s.get_parent())
-        sorted_by_values = dict(sorted(nbEnf.items(), key=lambda item: item[1]))
-        envoyer = []
-        occuper = []
-        i=0
-        while i<len(self.sommets)-1:
-            occuper = []
-            for k in sorted_by_values.keys():
-                if(k not in occuper and k not in envoyer):
-                    enfants = self.sommets[k].get_enfant()
-                    par = self.sommets[k].get_parent()
-                    ok = True
-                    for enf in enfants:
-                        if enf not in envoyer:
-                            if (k, enf) in court:
-                                ok = False
-                    if ok:
-                        for p in par:
-                            if(p not in envoyer and p not in occuper):
-                                #codition: si parant d'enfant, l'enfant doit avoir un autre parant
-                                if ok:
-                                    self.sommets[p].color = "blue"
-                                    self.sommets[k].color = "green"
-                                    self.sommets[k].textSiEnvoi = i
-                                    self.sommets[k].destinataire = p
-                                    envoyer.append(k)
-                                    occuper.append(p)
-                                    break
-                            else:
-                                voisins = self.sommets[k].get_voisins()
-                                for v in voisins:
-                                    if v not in occuper and v not in envoyer:
-                                        self.sommets[v].color = "blue"
-                                        self.sommets[k].color = "green"
-                                        self.sommets[k].textSiEnvoi = i
-                                        self.sommets[k].destinataire = v
-                                        envoyer.append(k)
-                                        occuper.append(v)
-                                        break
-            i+=1
+    def resolution(self, court, methode):
+        methode.resoudre(self, court)
 
     def bornInf(self):
         numSommet = 0
