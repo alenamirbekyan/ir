@@ -14,7 +14,7 @@ size = 50
 method = SDA()
 
 root = TK.Tk()
-root.attributes('-fullscreen', True)
+# root.attributes('-fullscreen', True)
 cv = turtle.ScrolledCanvas(root, width=1920, height=800)
 
 screen = turtle.TurtleScreen(cv)
@@ -170,21 +170,20 @@ btnLoad.grid(column=2, row=0)
 
 cv.grid(column=0, row=1, columnspan=4)
 
-# def on_mousewheel(event):
-#     cv.yview_scroll(int(-1 * (event.delta / 120)), "units")
-#
-# cv.bind_all("<MouseWheel>", on_mousewheel)
+def on_mousewheel_up(event):
+    cv.yview_scroll(-10, "units")
+
+def on_mousewheel_down(event):
+    cv.yview_scroll(10, "units")
+
+def on_mousewheel(event):
+    cv.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+
+cv.bind_all("<Up>", on_mousewheel_up)
+cv.bind_all("<Down>", on_mousewheel_down)
+cv.bind_all("<MouseWheel>", on_mousewheel)
 
 root.bind("<Return>", lambda event: generate())
 
-
-def on_mousewheel(event):
-    if event.num == 4 or event.delta > 0:
-        cv.yview_scroll(-1, "units")
-    elif event.num == 5 or event.delta < 0:
-        cv.yview_scroll(1, "units")
-
-cv.bind_all("<MouseWheel>", on_mousewheel)     # Windows / Mac scroll
-cv.bind_all("<Button-4>", on_mousewheel)       # Linux scroll up
-cv.bind_all("<Button-5>", on_mousewheel)
 root.mainloop()
