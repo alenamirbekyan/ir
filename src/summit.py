@@ -110,7 +110,7 @@ class Sommet:
         return res
 
 
-def genererGraphe(niveau, nbPoint):
+def generate_graph(niveau, nbPoint):
     num = 0
     startNiv = 0
     g = []

@@ -7,11 +7,11 @@ from method.sda import SDA
 
 from save import *
 
-from summit import genererGraphe, courtChemain
+from summit import generate_graph, courtChemain
 
 size = 50
-method = Heuristique()
-# method = SDA()
+# method = Heuristique()
+method = SDA()
 
 root = TK.Tk()
 root.attributes('-fullscreen', True)
@@ -77,7 +77,7 @@ def generate(charge = False):
     cv.delete("all")
     voisins = []
     if(not charge):
-        g = genererGraphe(size, 7)
+        g = generate_graph(size, 7)
     court_chemain = courtChemain(g, g.sommets[0], [], [])
     g.resolution(court_chemain, method)
 
@@ -170,10 +170,21 @@ btnLoad.grid(column=2, row=0)
 
 cv.grid(column=0, row=1, columnspan=4)
 
-def on_mousewheel(event):
-    cv.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
-cv.bind_all("<MouseWheel>", on_mousewheel)
+# def on_mousewheel(event):
+#     cv.yview_scroll(int(-1 * (event.delta / 120)), "units")
+#
+# cv.bind_all("<MouseWheel>", on_mousewheel)
 
 root.bind("<Return>", lambda event: generate())
+
+
+def on_mousewheel(event):
+    if event.num == 4 or event.delta > 0:
+        cv.yview_scroll(-1, "units")
+    elif event.num == 5 or event.delta < 0:
+        cv.yview_scroll(1, "units")
+
+cv.bind_all("<MouseWheel>", on_mousewheel)     # Windows / Mac scroll
+cv.bind_all("<Button-4>", on_mousewheel)       # Linux scroll up
+cv.bind_all("<Button-5>", on_mousewheel)
 root.mainloop()
