@@ -3,8 +3,11 @@ from random import randint
 
 
 class Graph:
-    def __init__(self, sommets):
+    def __init__(self, sommets, hauteur):
         self.sommets = sommets
+        self.min = {}
+        self.hauteur = hauteur
+        self.bornInf()
 
     def chargerGraph(self, fichier, ligne):
         pass
@@ -35,38 +38,45 @@ class Graph:
                 if(k not in occuper and k not in envoyer):
                     enfants = self.sommets[k].get_enfant()
                     par = self.sommets[k].get_parent()
-                    for p in par:
-                        if(p not in envoyer and p not in occuper):
-                            #codition: si parant d'enfant, l'enfant doit avoir un autre parant
-                            ok = True
-                            for enf in enfants:
-                                if enf not in envoyer:
-                                    if (k, enf) in court:
-                                        ok = False
-
-                            if ok:
-                                self.sommets[p].color = "blue"
-                                self.sommets[k].color = "green"
-                                self.sommets[k].textSiEnvoi = i
-                                self.sommets[k].destinataire = p
-                                envoyer.append(k)
-                                occuper.append(p)
-                                break
-                        else:
-                            voisins = self.sommets[k].get_voisins()
-                            for v in voisins:
-                                if v not in occuper and v not in envoyer:
-                                    self.sommets[v].color = "blue"
+                    ok = True
+                    for enf in enfants:
+                        if enf not in envoyer:
+                            if (k, enf) in court:
+                                ok = False
+                    if ok:
+                        for p in par:
+                            if(p not in envoyer and p not in occuper):
+                                #codition: si parant d'enfant, l'enfant doit avoir un autre parant
+                                if ok:
+                                    self.sommets[p].color = "blue"
                                     self.sommets[k].color = "green"
                                     self.sommets[k].textSiEnvoi = i
-                                    self.sommets[k].destinataire = v
+                                    self.sommets[k].destinataire = p
                                     envoyer.append(k)
-                                    occuper.append(v)
+                                    occuper.append(p)
                                     break
+                            else:
+                                voisins = self.sommets[k].get_voisins()
+                                for v in voisins:
+                                    if v not in occuper and v not in envoyer:
+                                        self.sommets[v].color = "blue"
+                                        self.sommets[k].color = "green"
+                                        self.sommets[k].textSiEnvoi = i
+                                        self.sommets[k].destinataire = v
+                                        envoyer.append(k)
+                                        occuper.append(v)
+                                        break
             i+=1
 
+    def bornInf(self):
+        numSommet = 0
+        for i in range(self.hauteur):
+            while self.sommets[numSommet].niveau <= i:
+                numSommet+=1
+
     def toString(self):
-        res="{\"sommet\":["
+        res=("{ \"hauteur\":"+str(self.hauteur)+","
+             "\"sommet\":[")
         first = True
         for s in self.sommets:
             if not first:
@@ -176,7 +186,7 @@ def genererGraphe(niveau, nbPoint):
         # for sommet in range(startNiv, endNiv):
         #     for
         startNiv = len(g)-nbSommets
-    return Graph(g)
+    return Graph(g, niveau)
 
 def courtChemain(g, sommet, connection, enfant_utilise):
     for voisin in sommet.get_enfant():

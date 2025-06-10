@@ -1,14 +1,12 @@
 import math
-import time
 import turtle as turtle
-from random import randint
 import tkinter as TK
 from save import *
 
 
 from sommet import genererGraphe, Sommet, courtChemain
 
-size = 5
+size = 50
 
 
 root = TK.Tk()

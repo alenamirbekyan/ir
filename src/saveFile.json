@@ -2,6 +2,7 @@
     "nombre": 1,
     "graphes": [
         {
+            "hauteur": 6,
             "sommet": [
                 {
                     "num": 0,
@@ -24,7 +25,8 @@
                     "enfants": [
                         2,
                         3,
-                        4
+                        4,
+                        5
                     ]
                 },
                 {
@@ -36,7 +38,7 @@
                     ],
                     "voisins": [],
                     "enfants": [
-                        5
+                        6
                     ]
                 },
                 {
@@ -47,10 +49,7 @@
                         1
                     ],
                     "voisins": [],
-                    "enfants": [
-                        5,
-                        6
-                    ]
+                    "enfants": []
                 },
                 {
                     "num": 4,
@@ -66,17 +65,14 @@
                 },
                 {
                     "num": 5,
-                    "niv": 3,
+                    "niv": 2,
                     "color": "green",
                     "parents": [
-                        3,
-                        2
+                        1
                     ],
-                    "voisins": [
-                        6
-                    ],
+                    "voisins": [],
                     "enfants": [
-                        8
+                        6
                     ]
                 },
                 {
@@ -84,29 +80,30 @@
                     "niv": 3,
                     "color": "green",
                     "parents": [
-                        4,
-                        3
+                        2,
+                        5,
+                        4
                     ],
-                    "voisins": [
-                        5
-                    ],
+                    "voisins": [],
                     "enfants": [
                         7,
                         8,
-                        9
+                        9,
+                        10
                     ]
                 },
                 {
                     "num": 7,
                     "niv": 4,
-                    "color": "blue",
+                    "color": "green",
                     "parents": [
                         6
                     ],
-                    "voisins": [],
+                    "voisins": [
+                        8
+                    ],
                     "enfants": [
-                        11,
-                        12
+                        11
                     ]
                 },
                 {
@@ -114,16 +111,12 @@
                     "niv": 4,
                     "color": "green",
                     "parents": [
-                        6,
-                        5
+                        6
                     ],
                     "voisins": [
-                        9
+                        7
                     ],
-                    "enfants": [
-                        10,
-                        11
-                    ]
+                    "enfants": []
                 },
                 {
                     "num": 9,
@@ -132,19 +125,17 @@
                     "parents": [
                         6
                     ],
-                    "voisins": [
-                        8
-                    ],
+                    "voisins": [],
                     "enfants": [
                         11
                     ]
                 },
                 {
                     "num": 10,
-                    "niv": 5,
+                    "niv": 4,
                     "color": "green",
                     "parents": [
-                        8
+                        6
                     ],
                     "voisins": [],
                     "enfants": []
@@ -154,29 +145,63 @@
                     "niv": 5,
                     "color": "green",
                     "parents": [
-                        9,
                         7,
-                        8
+                        9
+                    ],
+                    "voisins": [],
+                    "enfants": [
+                        12,
+                        13,
+                        14,
+                        15
+                    ]
+                },
+                {
+                    "num": 12,
+                    "niv": 6,
+                    "color": "green",
+                    "parents": [
+                        11
+                    ],
+                    "voisins": [],
+                    "enfants": []
+                },
+                {
+                    "num": 13,
+                    "niv": 6,
+                    "color": "green",
+                    "parents": [
+                        11
+                    ],
+                    "voisins": [],
+                    "enfants": []
+                },
+                {
+                    "num": 14,
+                    "niv": 6,
+                    "color": "green",
+                    "parents": [
+                        11
                     ],
                     "voisins": [
-                        12
+                        15
                     ],
                     "enfants": []
                 },
                 {
-                    "num": 12,
-                    "niv": 5,
+                    "num": 15,
+                    "niv": 6,
                     "color": "green",
                     "parents": [
-                        7
+                        11
                     ],
                     "voisins": [
-                        11
+                        14
                     ],
                     "enfants": []
                 }
             ],
-            "name": "1"
+            "name": "m"
         }
     ]
 }

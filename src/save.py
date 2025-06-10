@@ -28,6 +28,7 @@ def load(num):
     with open('saveFile.json', mode='r') as file:
         data = json.load(file)
         res = []
+        hauteur = data["graphes"][num]["hauteur"]
         for s in data["graphes"][num]["sommet"]:
             sommet = Sommet(int(s["niv"]), int(s["num"]))
             sommet.color = s["color"]
@@ -35,4 +36,4 @@ def load(num):
             sommet.voisin = s["voisins"]
             sommet.parent = s["parents"]
             res.append(sommet)
-        return Graph(res)
+        return Graph(res, hauteur)
