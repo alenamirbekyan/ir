@@ -2,16 +2,16 @@ import math
 import turtle as turtle
 import tkinter as TK
 
-from method.heuristic import Heuristique
+from method.heuristic import Heuristic
 from method.sda import SDA
 
 from save import *
 
 from summit import generate_graph, courtChemain
 
-size = 50
-method = Heuristique()
-# method = SDA()
+size = 5
+method = Heuristic()
+#method = SDA()
 
 root = TK.Tk()
 # root.attributes('-fullscreen', True)
@@ -78,7 +78,7 @@ def generate(charge = False):
     global iteration
 
     if(not charge):
-        g = generate_graph(size, 7)
+        g = generate_graph(size, 5)
     court_chemain = courtChemain(g, g.sommets[0], [], [])
     solution = g.resolution(court_chemain, method)
     iteration = -1

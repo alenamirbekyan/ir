@@ -1,7 +1,7 @@
 from method.method import Methode
 
 class SDA(Methode):
-    def resoudre(self, graph, shortest_path=[]):
+    def solve(self, graph, shortest_path=[]):
         print("Starting SDA protocol")
         print("Initial shortest path tree:", shortest_path)
 
@@ -12,6 +12,7 @@ class SDA(Methode):
         children_of = {}     # parent → list of children
         all_nodes = set()
         children = set()
+        solution = {}
 
         for parent, child in shortest_path:
             parent_of[child] = parent
@@ -66,11 +67,15 @@ class SDA(Methode):
             if transmissions:
                 for sender, receiver in transmissions:
                     already_sent.add(sender)
-                    graph.sommets[sender].color = "green"             # mark node as active
+                    # graph.sommets[sender].color = "green"             # mark node as active
                     graph.sommets[sender].text = f"S{slot}"           # show slot in the node
                     graph.sommets[sender].destinataire = receiver     # for arrow drawing
                     graph.sommets[sender].textSiEnvoi = slot          # show slot on the edge
                     print(f"SLOT {slot}: {sender} sends to {receiver}")
+                    if(slot in solution.keys()):
+                        solution[slot].append((sender,receiver))
+                    else:
+                        solution[slot] = [(sender,receiver)]
                 idle_slots = 0
             else:
                 print(f"SLOT {slot}: no transmission possible. Stopping.")
@@ -81,7 +86,7 @@ class SDA(Methode):
 
             slot += 1
 
-        # ─────────────────────────────────────────────
+        """# ─────────────────────────────────────────────
         # Step 4: Final coloring and reporting
         # ─────────────────────────────────────────────
         for node in graph.sommets:
@@ -89,10 +94,10 @@ class SDA(Methode):
                 node.color = "red"
                 print(f"Sink detected: {node.num}")
             elif node.num in already_sent:
-                node.color = "green"
+                #node.color = "green"
             else:
                 node.color = "black"
-                print(f"Blocked or inactive node: {node.num}")
+                print(f"Blocked or inactive node: {node.num}")"""
 
         print("SDA protocol completed.")
-        return 
+        return solution

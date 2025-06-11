@@ -25,7 +25,7 @@ class Graph:
         return res
 
     def resolution(self, court, methode):
-        return methode.resoudre(self, court)
+        return methode.solve(self, court)
 
     def bornInf(self):
         numSommet = 0
