@@ -9,7 +9,7 @@ from save import *
 
 from summit import generate_graph, courtChemain
 
-size = 50
+size = 10  # Taille de la grille (niveau)
 # method = Heuristique()
 method = SDA()
 
