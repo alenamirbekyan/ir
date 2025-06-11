@@ -1,7 +1,6 @@
 import math
 import turtle as turtle
 import tkinter as TK
-from time import sleep
 
 from method.heuristic import Heuristique
 from method.sda import SDA
