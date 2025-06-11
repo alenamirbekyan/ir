@@ -1,5 +1,5 @@
 {
-    "nombre": 2,
+    "nombre": 3,
     "graphes": [
         {
             "hauteur": 6,
@@ -3013,6 +3013,78 @@
                 }
             ],
             "name": "1"
+        },
+        {
+            "hauteur":2,
+            "sommet": [
+                {
+                    "num": 0,
+                    "niv": 0,
+                    "color": "red",
+                    "parents": [],
+                    "voisins": [],
+                    "enfants": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ]
+                },
+                {
+                    "num": 1,
+                    "niv": 1,
+                    "color": "black",
+                    "parents": [0],
+                    "voisins": [],
+                    "enfants": [
+                        6
+                    ]
+                },
+                {
+                    "num": 2,
+                    "niv": 1,
+                    "color": "black",
+                    "parents": [0],
+                    "voisins": [],
+                    "enfants": [
+                        6
+                    ]
+                },
+                {
+                    "num": 3,
+                    "niv": 1,
+                    "color": "black",
+                    "parents": [0],
+                    "voisins": [],
+                    "enfants": []
+                },
+                {
+                    "num": 4,
+                    "niv": 1,
+                    "color": "black",
+                    "parents": [0],
+                    "voisins": [],
+                    "enfants": []
+                },
+                {
+                    "num": 5,
+                    "niv": 1,
+                    "color": "black",
+                    "parents": [0],
+                    "voisins": [],
+                    "enfants": []
+                },
+                {
+                    "num": 6,
+                    "niv": 2,
+                    "color": "black",
+                    "parents": [1, 2],
+                    "voisins": [],
+                    "enfants": []
+                }
+            ],
+            "name": "exemple"
         }
     ]
 }
