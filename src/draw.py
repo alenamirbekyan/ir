@@ -1,6 +1,7 @@
 import math
 import turtle as turtle
 import tkinter as TK
+from time import sleep
 
 from method.heuristic import Heuristique
 from method.sda import SDA
@@ -10,8 +11,8 @@ from save import *
 from summit import generate_graph, courtChemain
 
 size = 50
-# method = Heuristique()
-method = SDA()
+method = Heuristique()
+# method = SDA()
 
 root = TK.Tk()
 # root.attributes('-fullscreen', True)
@@ -27,6 +28,8 @@ t.hideturtle()
 
 g = None
 coordonnees = {}
+solution = {}
+iteration = 0
 
 
 def lighten_color(color_name, factor=0.5):
@@ -35,18 +38,18 @@ def lighten_color(color_name, factor=0.5):
     light_rgb = [int(c + (255 - c) * factor) for c in rgb_8bit]
     return '#%02x%02x%02x' % tuple(light_rgb)
 
-def draw_sensor(sensor):
+def draw_sensor(sensor, color):
     t.teleport(coordonnees[sensor.num][0] - 10, coordonnees[sensor.num][1] - 16.8)
-    t.color(sensor.color)
+    t.color(color)
     t.setheading(0)
-    t.fillcolor(sensor.color)
-    t.fillcolor(lighten_color(sensor.color))
+    t.fillcolor(color)
+    t.fillcolor(lighten_color(color))
     t.begin_fill()
     for i in range(6):
         t.forward(20)
         t.left(60)
     t.end_fill()
-    t.fillcolor(sensor.color)
+    t.fillcolor(color)
     t.teleport(coordonnees[sensor.num][0], coordonnees[sensor.num][1])
     t.write(sensor.num, align="center")
 
@@ -71,17 +74,32 @@ def draw_line(sensor1, sensor2, text, couleur="black"):
         t.write(text, align="center")
 
 def generate(charge = False):
-    global t
     global g
-    global coordonnees
-    cv.delete("all")
-    voisins = []
+    global solution
+    global iteration
+
     if(not charge):
         g = generate_graph(size, 7)
     court_chemain = courtChemain(g, g.sommets[0], [], [])
-    g.resolution(court_chemain, method)
+    solution = g.resolution(court_chemain, method)
+    iteration = -1
+    print(solution)
 
+    draw()
 
+def test():
+    t.color("black")
+    t.teleport(0, 0)
+    t.goto(1, 0)
+
+def draw():
+    global iteration
+    global coordonnees
+    global g
+    global solution
+
+    cv.delete("all")
+    voisins = []
     coordonnees = {}
     niv = math.inf
     nbElemNiveau = 0
@@ -95,27 +113,45 @@ def generate(charge = False):
             nbElemNiveau = g.nbElemNiv(niv)
         coordonnees[s.num] = -1000 + 1600/(nbElemNiveau+1) * (i+1), size*40 - 80*(niv)
 
+    test()
     for k in coordonnees.keys():
         for v in g.sommets[k].get_voisins():
             txt = ""
             if not (g.sommets[v],g.sommets[k]) in voisins:
-                if g.sommets[k].destinataire == v:
+                if g.sommets[k].destinataire == v and int(g.sommets[k].textSiEnvoi) <= iteration:
                     txt = g.sommets[k].textSiEnvoi
                 voisins.append((g.sommets[k],g.sommets[v]))
                 draw_line(g.sommets[k], g.sommets[v], txt)
         for v in g.sommets[k].get_parent():
             txt = ""
             if not (g.sommets[v],g.sommets[k]) in voisins:
-                if g.sommets[k].destinataire == v:
+                if g.sommets[k].destinataire == v and int(g.sommets[k].textSiEnvoi) <= iteration:
                     txt = g.sommets[k].textSiEnvoi
                 voisins.append((g.sommets[k],g.sommets[v]))
                 draw_line(g.sommets[k], g.sommets[v], txt)
 
-    for chemain in court_chemain:
-        draw_line(g.sommets[chemain[0]], g.sommets[chemain[1]],"" , "red")
 
-    for k in coordonnees.keys():
-        draw_sensor(g.sommets[k])
+    # for chemain in court_chemain:
+    #     draw_line(g.sommets[chemain[0]], g.sommets[chemain[1]],"" , "red")
+
+    colorSummit = {}
+
+    for k in solution.keys():
+        for summits in solution[k]:
+            if(k<=iteration):
+                colorSummit[summits[0]] = "green"
+                if (k==iteration):
+                    colorSummit[summits[1]] = "blue"
+            else:
+                if(summits[1] not in colorSummit.keys()):
+                    colorSummit[summits[1]] = "black"
+                if(summits[0] not in colorSummit.keys()):
+                    colorSummit[summits[0]] = "black"
+
+
+    for k in colorSummit.keys():
+        draw_sensor(g.sommets[k], colorSummit[k])
+
     cv.update()
 
 def saveGraph():
@@ -140,9 +176,10 @@ def saveGraph():
 
 def load_graph(i):
     global g
+    global iteration
     g=load(i)
+    iteration = 0
     generate(True)
-
 
 def load_liste():
     popup = TK.Toplevel(root)
@@ -179,10 +216,41 @@ def on_mousewheel_down(event):
 def on_mousewheel(event):
     cv.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
+def forward(event):
+    global solution
+    global iteration
+    if solution != {} and iteration<max(solution.keys()):
+        iteration+=1
+        draw()
+
+def backward(event):
+    global solution
+    global iteration
+    if solution != {} and iteration>=0:
+        iteration -= 1
+        draw()
+
+def end(event):
+    global solution
+    global iteration
+    iteration =max(solution.keys())
+    draw()
+
+def start(event):
+    global iteration
+    iteration = -1
+    draw()
+
 
 cv.bind_all("<Up>", on_mousewheel_up)
 cv.bind_all("<Down>", on_mousewheel_down)
 cv.bind_all("<MouseWheel>", on_mousewheel)
+
+cv.bind_all("<Left>", backward)
+cv.bind_all("<Right>", forward)
+cv.bind_all("<F>", end)
+cv.bind_all("<D>", start)
+
 
 root.bind("<Return>", lambda event: generate())
 

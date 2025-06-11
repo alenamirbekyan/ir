@@ -25,7 +25,7 @@ class Graph:
         return res
 
     def resolution(self, court, methode):
-        methode.resoudre(self, court)
+        return methode.resoudre(self, court)
 
     def bornInf(self):
         numSommet = 0
@@ -154,4 +154,3 @@ def courtChemain(g, sommet, connection, enfant_utilise):
             enfant_utilise.append(voisin)
             connection = courtChemain(g, g.sommets[voisin], connection, enfant_utilise)
     return connection
-

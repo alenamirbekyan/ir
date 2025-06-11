@@ -3,6 +3,7 @@ from method.method import Methode
 class Heuristique(Methode):
 
     def resoudre(self, graphe, court=[]):
+        solution = {}
         nbEnf = {}
         for s in graphe.sommets:
             nbEnf[s.num] = len(s.get_enfant()) * 5 + len(s.get_voisins()) + len(s.get_parent())
@@ -24,22 +25,32 @@ class Heuristique(Methode):
                         for p in par:
                             if (p not in envoyer and p not in occuper):
                                 # codition: si parant d'enfant, l'enfant doit avoir un autre parant
-                                graphe.sommets[p].color = "blue"
-                                graphe.sommets[k].color = "green"
+                                # graphe.sommets[p].color = "blue"
+                                # graphe.sommets[k].color = "green"
                                 graphe.sommets[k].textSiEnvoi = i
                                 graphe.sommets[k].destinataire = p
                                 envoyer.append(k)
                                 occuper.append(p)
+                                if(i in solution.keys()):
+                                    solution[i].append((k,p))
+                                else:
+                                    solution[i] = [(k,p)]
                                 break
                             else:
                                 voisins = graphe.sommets[k].get_voisins()
                                 for v in voisins:
                                     if v not in occuper and v not in envoyer:
-                                        graphe.sommets[v].color = "blue"
-                                        graphe.sommets[k].color = "green"
+                                        # graphe.sommets[v].color = "blue"
+                                        # graphe.sommets[k].color = "green"
                                         graphe.sommets[k].textSiEnvoi = i
                                         graphe.sommets[k].destinataire = v
                                         envoyer.append(k)
                                         occuper.append(v)
+                                        if (i in solution.keys()):
+                                            solution[i].append((k, v))
+                                        else:
+                                            solution[i] = [(k, v)]
                                         break
+
             i += 1
+        return solution
