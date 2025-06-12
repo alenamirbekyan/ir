@@ -4,19 +4,19 @@ import tkinter as TK
 
 from method.heuristic import Heuristic
 from method.sda import SDA
-
 from save import *
 from summit import generate_graph, shortest_path_tree
 
 size = 5
-#method = Heuristic()
-method = SDA()
+method = Heuristic()
 
 root = TK.Tk()
-canvas = turtle.ScrolledCanvas(root, width=1920, height=800)
+root.title("Sensor Protocol Visualizer")
 
+# Canvas & Turtle
+canvas = turtle.ScrolledCanvas(root, width=1280, height=700)
 screen = turtle.TurtleScreen(canvas)
-screen.screensize(1920, size * 80 + 400)
+screen.screensize(1280, size * 80 + 300)
 pen = turtle.RawTurtle(screen)
 pen.hideturtle()
 pen.speed(0)
@@ -26,6 +26,23 @@ graph = None
 coordinates = {}
 solution = {}
 iteration = 0
+
+# Méthode sélectionnée (dropdown)
+method_var = TK.StringVar(root)
+method_var.set("Heuristic")
+
+def update_method(*args):
+    global method
+    selected = method_var.get()
+    if selected == "Heuristic":
+        method = Heuristic()
+    elif selected == "SDA":
+        method = SDA()
+    if graph:
+        generate(True)
+
+method_var.trace_add("write", lambda *args: update_method())
+method_menu = TK.OptionMenu(root, method_var, "Heuristic", "SDA")
 
 def lighten_color(color_name, factor=0.5):
     rgb_16bit = root.winfo_rgb(color_name)
@@ -55,10 +72,8 @@ def draw_edge(node1, node2, label, color="black"):
     pen.color(color)
     pen.goto(x2, y2)
 
-    if label != "":
-        dx = x2 - x1
-        dy = y2 - y1
-        angle = math.degrees(math.atan2(dy, dx))
+    if label:
+        angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
         offset = 25
         pen.teleport(x1 + math.cos(math.radians(angle)) * offset,
                      y1 + math.sin(math.radians(angle)) * offset)
@@ -69,7 +84,6 @@ def generate(from_load=False):
 
     if not from_load:
         graph = generate_graph(size, 5)
-        print("DEBUG TYPE:", type(graph))
 
     shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
 
@@ -82,15 +96,13 @@ def generate(from_load=False):
 
     if solution is None:
         print("Aucun plan de transmission trouvé.")
-        solution = {}  
+        solution = {}
 
     iteration = -1
     draw()
 
-    
-
 def draw():
-    global iteration, coordinates, graph, solution
+    global iteration, coordinates
 
     canvas.delete("all")
     visited_edges = []
@@ -99,10 +111,11 @@ def draw():
     nodes_at_level = 0
     index = 0
 
+    # Ne pas enlever : force affichage canvas sinon bug avec turtle
     pen.color("black")
     pen.teleport(0, 0)
     pen.goto(1, 0)
-    
+
     for node in graph.nodes:
         if current_level == node.level:
             index += 1
@@ -111,7 +124,7 @@ def draw():
             current_level = node.level
             nodes_at_level = graph.count_nodes_in_level(current_level)
 
-        coordinates[node.num] = (-1000 + 1600 / (nodes_at_level + 1) * (index + 1),
+        coordinates[node.num] = (-600 + 1000 / (nodes_at_level + 1) * (index + 1),
                                  size * 40 - 80 * current_level)
 
     for k in coordinates.keys():
@@ -156,7 +169,6 @@ def save_graph():
     name_entry.pack(padx=10, pady=5)
 
     def confirm():
-        global graph
         name = name_entry.get()
         if name:
             save(graph, name)
@@ -180,12 +192,14 @@ def load_list():
     frame.grid(padx=10, pady=10)
     names = loadNumber()
     for i, name in enumerate(names):
-        TK.Button(frame, text=f"Graph {name}", command=lambda i=i: load_graph_and_close(i, popup)).grid(row=i // 4, column=i % 4)
+        TK.Button(frame, text=f"Graph {name}",
+                  command=lambda i=i: load_graph_and_close(i, popup)).grid(row=i // 4, column=i % 4)
 
 def load_graph_and_close(index, popup):
     load_graph(index)
     popup.destroy()
 
+# Navigation
 def scroll_up(event): canvas.yview_scroll(-10, "units")
 def scroll_down(event): canvas.yview_scroll(10, "units")
 def scroll_mouse(event): canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
@@ -212,12 +226,14 @@ def jump_start(event):
     iteration = -1
     draw()
 
-# UI buttons and bindings
-TK.Button(root, text="Generate", command=generate).grid(column=1, row=0)
+# UI
 TK.Button(root, text="Save", command=save_graph).grid(column=0, row=0)
+TK.Button(root, text="Generate", command=generate).grid(column=1, row=0)
 TK.Button(root, text="Load", command=load_list).grid(column=2, row=0)
+method_menu.grid(column=3, row=0)
 canvas.grid(column=0, row=1, columnspan=4)
 
+# Bindings clavier
 canvas.bind_all("<Up>", scroll_up)
 canvas.bind_all("<Down>", scroll_down)
 canvas.bind_all("<MouseWheel>", scroll_mouse)
@@ -225,7 +241,6 @@ canvas.bind_all("<Left>", step_backward)
 canvas.bind_all("<Right>", step_forward)
 canvas.bind_all("<F>", jump_end)
 canvas.bind_all("<D>", jump_start)
-
 root.bind("<Return>", lambda e: generate())
 
 root.mainloop()
