@@ -6,30 +6,26 @@ from method.heuristic import Heuristic
 from method.sda import SDA
 
 from save import *
-
-from summit import generate_graph, courtChemain
+from summit import generate_graph, shortest_path_tree
 
 size = 5
-method = Heuristic()
-#method = SDA()
+#method = Heuristic()
+method = SDA()
 
 root = TK.Tk()
-# root.attributes('-fullscreen', True)
-cv = turtle.ScrolledCanvas(root, width=1920, height=800)
+canvas = turtle.ScrolledCanvas(root, width=1920, height=800)
 
-screen = turtle.TurtleScreen(cv)
-screen.screensize(1920,size * 80 + 400) #added by me
-t = turtle.RawTurtle(screen)
-t.hideturtle()
-t.speed(0)
-screen.tracer(0,0)
-t.hideturtle()
+screen = turtle.TurtleScreen(canvas)
+screen.screensize(1920, size * 80 + 400)
+pen = turtle.RawTurtle(screen)
+pen.hideturtle()
+pen.speed(0)
+screen.tracer(0, 0)
 
-g = None
-coordonnees = {}
+graph = None
+coordinates = {}
 solution = {}
 iteration = 0
-
 
 def lighten_color(color_name, factor=0.5):
     rgb_16bit = root.winfo_rgb(color_name)
@@ -37,220 +33,199 @@ def lighten_color(color_name, factor=0.5):
     light_rgb = [int(c + (255 - c) * factor) for c in rgb_8bit]
     return '#%02x%02x%02x' % tuple(light_rgb)
 
-def draw_sensor(sensor, color):
-    t.teleport(coordonnees[sensor.num][0] - 10, coordonnees[sensor.num][1] - 16.8)
-    t.color(color)
-    t.setheading(0)
-    t.fillcolor(color)
-    t.fillcolor(lighten_color(color))
-    t.begin_fill()
-    for i in range(6):
-        t.forward(20)
-        t.left(60)
-    t.end_fill()
-    t.fillcolor(color)
-    t.teleport(coordonnees[sensor.num][0], coordonnees[sensor.num][1])
-    t.write(sensor.num, align="center")
+def draw_node(node, color):
+    pen.teleport(coordinates[node.num][0] - 10, coordinates[node.num][1] - 16.8)
+    pen.color(color)
+    pen.setheading(0)
+    pen.fillcolor(lighten_color(color))
+    pen.begin_fill()
+    for _ in range(6):
+        pen.forward(20)
+        pen.left(60)
+    pen.end_fill()
+    pen.fillcolor(color)
+    pen.teleport(coordinates[node.num][0], coordinates[node.num][1])
+    pen.write(node.num, align="center")
 
-def draw_line(sensor1, sensor2, text, couleur="black"):
-    x1, y1 = coordonnees[sensor1.num]
-    x2, y2 = coordonnees[sensor2.num]
+def draw_edge(node1, node2, label, color="black"):
+    x1, y1 = coordinates[node1.num]
+    x2, y2 = coordinates[node2.num]
 
-    t.teleport(x1, y1)
-    t.color(couleur)
-    t.goto(x2, y2)
+    pen.teleport(x1, y1)
+    pen.color(color)
+    pen.goto(x2, y2)
 
-    if text != "":
+    if label != "":
         dx = x2 - x1
         dy = y2 - y1
         angle = math.degrees(math.atan2(dy, dx))
+        offset = 25
+        pen.teleport(x1 + math.cos(math.radians(angle)) * offset,
+                     y1 + math.sin(math.radians(angle)) * offset)
+        pen.write(label, align="center")
 
-        # Position du texte légèrement décalée dans la direction du trait
-        distance = 25
-        t.teleport(x1 + math.cos(math.radians(angle)) * distance,
-                   y1 + math.sin(math.radians(angle)) * distance)
+def generate(from_load=False):
+    global graph, solution, iteration
 
-        t.write(text, align="center")
+    if not from_load:
+        graph = generate_graph(size, 5)
+        print("DEBUG TYPE:", type(graph))
 
-def generate(charge = False):
-    global g
-    global solution
-    global iteration
+    shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
 
-    if(not charge):
-        g = generate_graph(size, 5)
-    court_chemain = courtChemain(g, g.sommets[0], [], [])
-    solution = g.resolution(court_chemain, method)
+    if not shortest_path:
+        print("Le plus court chemin est vide. Le graphe est probablement mal formé.")
+        solution = {}
+        return
+
+    solution = graph.resolution(shortest_path, method)
+
+    if solution is None:
+        print("Aucun plan de transmission trouvé.")
+        solution = {}  
+
     iteration = -1
-    print(solution)
-
     draw()
 
-def test():
-    t.color("black")
-    t.teleport(0, 0)
-    t.goto(1, 0)
+    
 
 def draw():
-    global iteration
-    global coordonnees
-    global g
-    global solution
+    global iteration, coordinates, graph, solution
 
-    cv.delete("all")
-    voisins = []
-    coordonnees = {}
-    niv = math.inf
-    nbElemNiveau = 0
-    i = 0
-    for s in g.sommets:
-        if niv == s.niveau:
-            i+=1
+    canvas.delete("all")
+    visited_edges = []
+    coordinates = {}
+    current_level = math.inf
+    nodes_at_level = 0
+    index = 0
+
+    pen.color("black")
+    pen.teleport(0, 0)
+    pen.goto(1, 0)
+    
+    for node in graph.nodes:
+        if current_level == node.level:
+            index += 1
         else:
-            i=0
-            niv = s.niveau
-            nbElemNiveau = g.nbElemNiv(niv)
-        coordonnees[s.num] = -1000 + 1600/(nbElemNiveau+1) * (i+1), size*40 - 80*(niv)
+            index = 0
+            current_level = node.level
+            nodes_at_level = graph.count_nodes_in_level(current_level)
 
-    test()
-    for k in coordonnees.keys():
-        for v in g.sommets[k].get_voisins():
-            txt = ""
-            if not (g.sommets[v],g.sommets[k]) in voisins:
-                if g.sommets[k].destinataire == v and int(g.sommets[k].textSiEnvoi) <= iteration:
-                    txt = g.sommets[k].textSiEnvoi
-                voisins.append((g.sommets[k],g.sommets[v]))
-                draw_line(g.sommets[k], g.sommets[v], txt)
-        for v in g.sommets[k].get_parent():
-            txt = ""
-            if not (g.sommets[v],g.sommets[k]) in voisins:
-                if g.sommets[k].destinataire == v and int(g.sommets[k].textSiEnvoi) <= iteration:
-                    txt = g.sommets[k].textSiEnvoi
-                voisins.append((g.sommets[k],g.sommets[v]))
-                draw_line(g.sommets[k], g.sommets[v], txt)
+        coordinates[node.num] = (-1000 + 1600 / (nodes_at_level + 1) * (index + 1),
+                                 size * 40 - 80 * current_level)
 
+    for k in coordinates.keys():
+        for v in graph.nodes[k].get_neighbors():
+            label = ""
+            if (graph.nodes[v], graph.nodes[k]) not in visited_edges:
+                if graph.nodes[k].receiver == v and int(graph.nodes[k].textOnSend) <= iteration:
+                    label = graph.nodes[k].textOnSend
+                visited_edges.append((graph.nodes[k], graph.nodes[v]))
+                draw_edge(graph.nodes[k], graph.nodes[v], label)
 
-    # for chemain in court_chemain:
-    #     draw_line(g.sommets[chemain[0]], g.sommets[chemain[1]],"" , "red")
+        for v in graph.nodes[k].get_parents():
+            label = ""
+            if (graph.nodes[v], graph.nodes[k]) not in visited_edges:
+                if graph.nodes[k].receiver == v and int(graph.nodes[k].textOnSend) <= iteration:
+                    label = graph.nodes[k].textOnSend
+                visited_edges.append((graph.nodes[k], graph.nodes[v]))
+                draw_edge(graph.nodes[k], graph.nodes[v], label)
 
-    colorSummit = {}
-
+    color_map = {}
     for k in solution.keys():
-        for summits in solution[k]:
-            if(k<=iteration):
-                colorSummit[summits[0]] = "green"
-                if (k==iteration):
-                    colorSummit[summits[1]] = "blue"
+        for source, target in solution[k]:
+            if k <= iteration:
+                color_map[source] = "green"
+                color_map[target] = "blue" if k == iteration else "royalblue"
             else:
-                if(summits[1] not in colorSummit.keys()):
-                    colorSummit[summits[1]] = "black"
-                if(summits[0] not in colorSummit.keys()):
-                    colorSummit[summits[0]] = "black"
+                color_map.setdefault(source, "black")
+                color_map.setdefault(target, "black")
 
+    for node_id, color in color_map.items():
+        draw_node(graph.nodes[node_id], color)
 
-    for k in colorSummit.keys():
-        draw_sensor(g.sommets[k], colorSummit[k])
+    canvas.update()
 
-    cv.update()
-
-def saveGraph():
+def save_graph():
     popup = TK.Toplevel(root)
-    popup.title("Nom du graphe")
+    popup.title("Graph Name")
     popup.grab_set()
 
-    TK.Label(popup, text="Entrez un nom pour le graphe :").pack(padx=10, pady=10)
+    TK.Label(popup, text="Enter a name for the graph:").pack(padx=10, pady=10)
     name_entry = TK.Entry(popup)
     name_entry.pack(padx=10, pady=5)
 
     def confirm():
-        global g
-        nom = name_entry.get()
-        if nom:
-            save(g, nom)  # Appelle ta fonction de sauvegarde
+        global graph
+        name = name_entry.get()
+        if name:
+            save(graph, name)
             popup.destroy()
         else:
-            TK.messagebox.showwarning("Erreur", "Le nom ne peut pas être vide.")
+            TK.messagebox.showwarning("Error", "Name cannot be empty.")
 
-    TK.Button(popup, text="Enregistrer", command=confirm).pack(pady=10)
+    TK.Button(popup, text="Save", command=confirm).pack(pady=10)
 
-def load_graph(i):
-    global g
-    global iteration
-    g=load(i)
+def load_graph(index):
+    global graph, iteration
+    graph = load(index)
     iteration = 0
     generate(True)
 
-def load_liste():
+def load_list():
     popup = TK.Toplevel(root)
-    popup.title("Sélection du graphe")
+    popup.title("Select Graph")
     popup.grab_set()
     frame = TK.Frame(popup)
     frame.grid(padx=10, pady=10)
-    nb = loadNumber()
-    for i in range(len(nb)):
-        name = nb[i]
-        TK.Button(frame, text=f"Graphe {name}", command=lambda i=i: load(i)).grid(row=i // 4, column=i % 4)
+    names = loadNumber()
+    for i, name in enumerate(names):
+        TK.Button(frame, text=f"Graph {name}", command=lambda i=i: load_graph_and_close(i, popup)).grid(row=i // 4, column=i % 4)
 
-    def load(i):
-        load_graph(i)
-        popup.destroy()
+def load_graph_and_close(index, popup):
+    load_graph(index)
+    popup.destroy()
 
-btn = TK.Button(root, text="Générer", command=generate)
-btn.grid(column=1, row=0)
+def scroll_up(event): canvas.yview_scroll(-10, "units")
+def scroll_down(event): canvas.yview_scroll(10, "units")
+def scroll_mouse(event): canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
-btnSave = TK.Button(root, text="Sauvegarder", command=saveGraph)
-btnSave.grid(column=0, row=0)
-
-btnLoad = TK.Button(root, text="Charger", command=load_liste)
-btnLoad.grid(column=2, row=0)
-
-cv.grid(column=0, row=1, columnspan=4)
-
-def on_mousewheel_up(event):
-    cv.yview_scroll(-10, "units")
-
-def on_mousewheel_down(event):
-    cv.yview_scroll(10, "units")
-
-def on_mousewheel(event):
-    cv.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
-def forward(event):
-    global solution
+def step_forward(event):
     global iteration
-    if solution != {} and iteration<max(solution.keys()):
-        iteration+=1
+    if solution and iteration < max(solution.keys()):
+        iteration += 1
         draw()
 
-def backward(event):
-    global solution
+def step_backward(event):
     global iteration
-    if solution != {} and iteration>=0:
+    if solution and iteration >= 0:
         iteration -= 1
         draw()
 
-def end(event):
-    global solution
+def jump_end(event):
     global iteration
-    iteration =max(solution.keys())
+    iteration = max(solution.keys())
     draw()
 
-def start(event):
+def jump_start(event):
     global iteration
     iteration = -1
     draw()
 
+# UI buttons and bindings
+TK.Button(root, text="Generate", command=generate).grid(column=1, row=0)
+TK.Button(root, text="Save", command=save_graph).grid(column=0, row=0)
+TK.Button(root, text="Load", command=load_list).grid(column=2, row=0)
+canvas.grid(column=0, row=1, columnspan=4)
 
-cv.bind_all("<Up>", on_mousewheel_up)
-cv.bind_all("<Down>", on_mousewheel_down)
-cv.bind_all("<MouseWheel>", on_mousewheel)
+canvas.bind_all("<Up>", scroll_up)
+canvas.bind_all("<Down>", scroll_down)
+canvas.bind_all("<MouseWheel>", scroll_mouse)
+canvas.bind_all("<Left>", step_backward)
+canvas.bind_all("<Right>", step_forward)
+canvas.bind_all("<F>", jump_end)
+canvas.bind_all("<D>", jump_start)
 
-cv.bind_all("<Left>", backward)
-cv.bind_all("<Right>", forward)
-cv.bind_all("<F>", end)
-cv.bind_all("<D>", start)
-
-
-root.bind("<Return>", lambda event: generate())
+root.bind("<Return>", lambda e: generate())
 
 root.mainloop()

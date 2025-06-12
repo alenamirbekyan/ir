@@ -3,154 +3,164 @@ from random import randint
 
 
 class Graph:
-    def __init__(self, sommets, hauteur):
-        self.sommets = sommets
-        self.min = {}
-        self.hauteur = hauteur
-        self.bornInf()
+    def __init__(self, nodes, height):
+        self.nodes = nodes  # List of all nodes in the graph
+        self.min = {}       # Currently unused but could store min distances or other metadata
+        self.height = height  # Number of levels in the hierarchical graph
+        self.set_lower_bound()
 
-    def load_graph(self, fichier, ligne):
-        pass
+    def load_graph(self, file, line):
+        pass  # Placeholder for loading a graph from a file
 
-    def save_graph(self, fichier):
-        pass
+    def save_graph(self, file):
+        pass  # Placeholder for saving a graph to a file
 
-    def nbElemNiv(self, niv):
-        res = 0
-        for s in self.sommets:
-            if s.niveau == niv:
-                res+=1
-            elif s.niveau>niv:
-                return res
-        return res
+    def count_nodes_in_level(self, level):
+        """Return the number of nodes at a given level."""
+        count = 0
+        for node in self.nodes:
+            if node.level == level:
+                count += 1
+            elif node.level > level:
+                return count
+        return count
 
-    def resolution(self, court, methode):
-        return methode.solve(self, court)
+    def resolution(self, shortest_path, method):
+        """Apply the given method (SDA or Heuristic) on the graph."""
+        return method.solve(self, shortest_path)
 
-    def bornInf(self):
-        numSommet = 0
-        for i in range(self.hauteur):
-            while self.sommets[numSommet].niveau <= i:
-                numSommet+=1
-
-    def toString(self):
-        res=("{ \"hauteur\":"+str(self.hauteur)+","
-             "\"sommet\":[")
-        first = True
-        for s in self.sommets:
-            if not first:
-                res+=","
-            first = False
-            res+="{"+s.toString()+"}"
-        return res+"]}\n"
-
-
-class Sommet:
-    def __init__(self, niv, num):
-        self.num = num
-        self.niveau = niv
-        self.voisin = []
-        self.parent = []
-        self.enfants = []
-        self.color = "black"
-        self.state = None
-        self.text = ""
-        self.textSiEnvoi = ""
-        self.destinataire = None
-
-    def get_voisins(self):
-        return self.voisin
-
-    def add_voisin(self, sommet):
-        if not sommet.num in self.voisin:
-            self.voisin.append(sommet.num)
-            sommet.voisin.append(self.num)
-
-    def add_parent(self, par):
-        self.parent.append(par.num)
-        par.add_enfant(self)
-
-    def add_enfant(self, enf):
-        self.enfants.append(enf.num)
-
-    def get_parent(self):
-        return self.parent
-
-    def get_enfant(self):
-        return self.enfants
+    def set_lower_bound(self):
+        """Advance through the node list by level – used to index or initialize lower bounds."""
+        current_index = 0
+        for i in range(self.height):
+            while self.nodes[current_index].level <= i:
+                current_index += 1
 
     def toString(self):
-        res="\"num\":"+str(self.num)+","
-        res+="\"niv\":"+str(self.niveau)+","
-        res+="\"color\":\""+self.color+"\","
-        res+="\"parents\":["
+        """Return a string representation of the graph in JSON-like format."""
+        res = "{ \"height\":" + str(self.height) + ",\"node\":["
         first = True
-        for p in self.parent:
+        for node in self.nodes:
             if not first:
-                res+=","
+                res += ","
             first = False
-            res+=str(p)
-        res+="],"
-        res += "\"voisins\":["
-        first = True
-        for p in self.voisin:
-            if not first:
-                res+=","
-            first = False
-            res +=str(p)
+            res += "{" + node.toString() + "}"
+        return res + "]}\n"
+
+
+class Node:
+    def __init__(self, level, num):
+        self.num = num                  # Unique identifier for the node
+        self.level = level              # Vertical level (used for drawing)
+        self.neighbors = []            # Undirected neighbors
+        self.parents = []              # Parents (nodes at upper level connected to this one)
+        self.childrens = []             # childrens (nodes at lower level connected from this one)
+        self.color = "black"           # Used for visualization
+        self.state = None              # Can hold any custom state
+        self.text = ""                 # Label displayed in the node
+        self.textOnSend = ""           # Text shown on the edge during data transmission
+        self.receiver = None           # ID of the node that this node sends data to
+
+    def get_neighbors(self):
+        return self.neighbors
+
+    def add_neighbor(self, node):
+        """Add a bidirectional connection between two nodes."""
+        if node.num not in self.neighbors:
+            self.neighbors.append(node.num)
+            node.neighbors.append(self.num)
+
+    def add_parent(self, parent):
+        """Add a parent node and set this node as the child of that parent."""
+        self.parents.append(parent.num)
+        parent.add_child(self)
+
+    def add_child(self, child):
+        """Add a child node (used internally when assigning parents)."""
+        self.childrens.append(child.num)
+
+    def get_parents(self):
+        return self.parents
+
+    def get_childrens(self):
+        return self.childrens
+
+    def toString(self):
+        """Return a JSON-like string representation of the node and its connections."""
+        res = "\"num\":" + str(self.num) + ","
+        res += "\"level\":" + str(self.level) + ","
+        res += "\"color\":\"" + self.color + "\","
+
+        res += "\"parents\":["
+        res += ",".join(map(str, self.parents))
         res += "],"
-        res+="\"enfants\":["
-        first = True
-        for p in self.enfants:
-            if not first:
-                res+=","
-            first = False
-            res+=str(p)
-        res+="]"
+
+        res += "\"neighbors\":["
+        res += ",".join(map(str, self.neighbors))
+        res += "],"
+
+        res += "\"childrens\":["
+        res += ",".join(map(str, self.childrens))
+        res += "]"
+
         return res
 
 
-def generate_graph(niveau, nbPoint):
+def generate_graph(levels, max_nodes_per_level):
+    """Generate a hierarchical graph with random connections between levels."""
     num = 0
-    startNiv = 0
-    g = []
-    s = Sommet(0, num)
-    s.color = "red"
-    g.append(s)
-    for n in range(1, niveau+1):
-        endNiv = len(g)
-        nbSommets = randint(1,nbPoint)
-        prec = None
-        for i in range(nbSommets):
-            num+=1
-            s=Sommet(n, num)
-            g.append(s)
-            if(prec is not None):
-                if randint(0,2) == 2:
-                    s.add_voisin(prec)
-            prec = s
+    start_level = 0
+    graph = []
 
-        dejaFait = []
-        for sommet in range(endNiv, endNiv+nbSommets):
-            sn = g[sommet]
-            nbconnection = randint(1, endNiv - startNiv)
-            if(nbconnection > 3):
-                nbconnection = 3
-            # sn.text = nbconnection
-            for i in range(nbconnection):
-                sn1 = g[randint(startNiv, endNiv-1)]
-                if(not (sn, sn1) in dejaFait):
-                    dejaFait.append((sn, sn1))
-                    sn.add_parent(sn1)
-        # for sommet in range(startNiv, endNiv):
-        #     for
-        startNiv = len(g)-nbSommets
-    return Graph(g, niveau)
+    # Add the sink node (level 0)
+    root = Node(0, num)
+    root.color = "red"
+    graph.append(root)
 
-def courtChemain(g, sommet, connection, enfant_utilise):
-    for voisin in sommet.get_enfant():
-        if not voisin in enfant_utilise:
-            connection.append((sommet.num, voisin))
-            enfant_utilise.append(voisin)
-            connection = courtChemain(g, g.sommets[voisin], connection, enfant_utilise)
+    for level in range(1, levels + 1):
+        end_level = len(graph)
+        node_count = randint(1, max_nodes_per_level)
+        previous = None
+
+        # Create nodes for the current level
+        for _ in range(node_count):
+            num += 1
+            node = Node(level, num)
+            graph.append(node)
+
+            # Add horizontal random edge to previous node (within the same level)
+            if previous is not None and randint(0, 2) == 2:
+                node.add_neighbor(previous)
+
+            previous = node
+
+        # Create vertical connections (childrens ↔ parents)
+        already_linked = []
+        for i in range(end_level, end_level + node_count):
+            current_node = graph[i]
+            connection_count = randint(1, end_level - start_level)
+            connection_count = min(connection_count, 3)
+
+            for _ in range(connection_count):
+                parent_candidate = graph[randint(start_level, end_level - 1)]
+                if (current_node, parent_candidate) not in already_linked:
+                    already_linked.append((current_node, parent_candidate))
+                    current_node.add_parent(parent_candidate)
+
+        # Prepare the range for the next level
+        start_level = len(graph) - node_count
+
+    return Graph(graph, levels)
+
+
+def shortest_path_tree(graph, root_node, connection, used_childrens):
+    """
+    Build a shortest path tree rooted at the sink by traversing each child once.
+    The output is a list of (parent, child) edges.
+    """
+    for child_id in root_node.get_childrens():
+        if child_id not in used_childrens:
+            connection.append((root_node.num, child_id))
+            used_childrens.append(child_id)
+            connection = shortest_path_tree(graph, graph.nodes[child_id], connection, used_childrens)
     return connection

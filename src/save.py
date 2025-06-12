@@ -1,6 +1,6 @@
 import json
 
-from summit import Graph, Sommet
+from summit import Graph, Node
 
 
 def save(g, name):
@@ -17,7 +17,7 @@ def save(g, name):
             file.truncate()
 
 def loadNumber():
-    with open('save_file.json', mode='r') as file:
+    with open('/Users/rudoniantonin/Documents/CESI/S8/IR/ir/src/save_file.json', mode='r') as file:
         data = json.load(file)
         res = []
         for i in range(data["nombre"]):
@@ -25,15 +25,15 @@ def loadNumber():
         return res
 
 def load(num):
-    with open('save_file.json', mode='r') as file:
+    with open('/Users/rudoniantonin/Documents/CESI/S8/IR/ir/src/save_file.json', mode='r') as file:
         data = json.load(file)
         res = []
-        hauteur = data["graphes"][num]["hauteur"]
-        for s in data["graphes"][num]["sommet"]:
-            sommet = Sommet(int(s["niv"]), int(s["num"]))
-            sommet.color = s["color"]
-            sommet.enfants = s["enfants"]
-            sommet.voisin = s["voisins"]
-            sommet.parent = s["parents"]
-            res.append(sommet)
-        return Graph(res, hauteur)
+        height = data["graphes"][num]["height"]
+        for s in data["graphes"][num]["node"]:
+            node = Node(int(s["level"]), int(s["num"]))
+            node.color = s["color"]
+            node.childrens = s["childrens"]
+            node.neighbors = s["neighbors"]
+            node.parents = s["parents"]
+            res.append(node)
+        return Graph(res, height)

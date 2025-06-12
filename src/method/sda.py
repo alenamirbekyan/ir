@@ -51,7 +51,7 @@ class SDA(Methode):
                     leaves.append(node)
 
             # 🔽 Sort leaves by decreasing number of neighbors (more connected = more urgent)
-            leaves.sort(key=lambda n: len(graph.sommets[n].get_voisins()), reverse=True)
+            leaves.sort(key=lambda n: len(graph.nodes[n].get_neighbors()), reverse=True)
 
             transmissions = []              # list of (sender, receiver)
             occupied_receivers = set()      # to avoid two children sending to the same parent
@@ -67,11 +67,13 @@ class SDA(Methode):
             if transmissions:
                 for sender, receiver in transmissions:
                     already_sent.add(sender)
-                    # graph.sommets[sender].color = "green"             # mark node as active
-                    graph.sommets[sender].text = f"S{slot}"           # show slot in the node
-                    graph.sommets[sender].destinataire = receiver     # for arrow drawing
-                    graph.sommets[sender].textSiEnvoi = slot          # show slot on the edge
+                    graph.nodes[sender].text = f"S{slot}"           # affichage sur le nœud
+                    graph.nodes[sender].destinataire = receiver     # flèche
+                    graph.nodes[sender].textSiEnvoi = slot          # ancien nom
+                    graph.nodes[sender].textOnSend = slot           # <- AJOUT
+                    graph.nodes[sender].receiver = receiver         # <- AJOUT
                     print(f"SLOT {slot}: {sender} sends to {receiver}")
+                    solution.setdefault(slot, []).append((sender, receiver))
                     if(slot in solution.keys()):
                         solution[slot].append((sender,receiver))
                     else:
@@ -89,7 +91,7 @@ class SDA(Methode):
         """# ─────────────────────────────────────────────
         # Step 4: Final coloring and reporting
         # ─────────────────────────────────────────────
-        for node in graph.sommets:
+        for node in graph.nodes:
             if node.num == sink:
                 node.color = "red"
                 print(f"Sink detected: {node.num}")
