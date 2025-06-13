@@ -2,8 +2,8 @@ from method.method import Methode
 
 class SDA(Methode):
     def solve(self, graph, shortest_path=[]):
-        print("Starting SDA protocol")
-        print("Initial shortest path tree:", shortest_path)
+        # print("Starting SDA protocol")
+        # print("Initial shortest path tree:", shortest_path)
 
         # ─────────────────────────────────────────────
         # Step 1: Build parent/children relationships
@@ -27,7 +27,7 @@ class SDA(Methode):
         # ─────────────────────────────────────────────
         roots = list(all_nodes - children)
         if len(roots) != 1:
-            print(f"Error: {len(roots)} roots detected instead of one.")
+            # print(f"Error: {len(roots)} roots detected instead of one.")
             return
         sink = roots[0]
 
@@ -72,7 +72,7 @@ class SDA(Methode):
                     graph.nodes[sender].textSiEnvoi = slot          # ancien nom
                     graph.nodes[sender].textOnSend = slot           # <- AJOUT
                     graph.nodes[sender].receiver = receiver         # <- AJOUT
-                    print(f"SLOT {slot}: {sender} sends to {receiver}")
+                    # print(f"SLOT {slot}: {sender} sends to {receiver}")
                     solution.setdefault(slot, []).append((sender, receiver))
                     if(slot in solution.keys()):
                         solution[slot].append((sender,receiver))
@@ -80,10 +80,10 @@ class SDA(Methode):
                         solution[slot] = [(sender,receiver)]
                 idle_slots = 0
             else:
-                print(f"SLOT {slot}: no transmission possible. Stopping.")
+                # print(f"SLOT {slot}: no transmission possible. Stopping.")
                 idle_slots += 1
                 if idle_slots >= max_idle_slots:
-                    print("Deadlock detected: too many idle slots.")
+                    # print("Deadlock detected: too many idle slots.")
                     break
 
             slot += 1
