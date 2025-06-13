@@ -35,7 +35,7 @@ class SDA(Methode):
         # Step 3: SDA scheduling process
         # ─────────────────────────────────────────────
         already_sent = set()          # nodes that already transmitted data
-        slot = 1                      # current slot number
+        slot = 0                      # current slot number
         max_idle_slots = 5            # safety to avoid infinite loops
         idle_slots = 0                # consecutive slots with no transmission
 

@@ -17,7 +17,7 @@ def save(g, name):
             file.truncate()
 
 def loadNumber():
-    with open('/Users/rudoniantonin/Documents/CESI/S8/IR/ir/src/save_file.json', mode='r') as file:
+    with open('save_file.json', mode='r') as file:
         data = json.load(file)
         res = []
         for i in range(data["nombre"]):
@@ -25,7 +25,7 @@ def loadNumber():
         return res
 
 def load(num):
-    with open('/Users/rudoniantonin/Documents/CESI/S8/IR/ir/src/save_file.json', mode='r') as file:
+    with open('save_file.json', mode='r') as file:
         data = json.load(file)
         res = []
         height = data["graphes"][num]["height"]

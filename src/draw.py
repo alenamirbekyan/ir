@@ -80,7 +80,7 @@ def draw_edge(node1, node2, label, color="black"):
     pen.color(color)
     pen.goto(x2, y2)
 
-    if label:
+    if label != "":
         angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
         offset = 25
         pen.teleport(x1 + math.cos(math.radians(angle)) * offset,
