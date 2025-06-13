@@ -29,7 +29,7 @@ coordinates = {}
 solution = {}
 iteration = 0
 
-# Dropdown pour choisir la méthode
+# Dropdown 
 method_var = TK.StringVar(root)
 method_var.set("Heuristic")
 
@@ -94,6 +94,7 @@ def generate(from_load=False):
     try:
         size = int(size_entry.get())
         per_level = int(per_level_entry.get())
+        screen.screensize(1280, size * 80 + 300)
     except ValueError:
         print("Les valeurs de taille doivent être des entiers.")
         return
@@ -114,6 +115,14 @@ def generate(from_load=False):
 
     iteration = -1
     draw()
+
+def draw_max_slot_label(slot):
+    """Display the total number of slots used in the solution at a fixed position."""
+    pen.color("black")
+    pen.teleport(-600,size * 40)  
+    pen.write(f"Total slots: {slot + 1}", align="left", font=("Arial", 12, "bold"))
+
+
 
 def draw():
     global iteration, coordinates
@@ -169,7 +178,7 @@ def draw():
 
     for node_id, color in color_map.items():
         draw_node(graph.nodes[node_id], color)
-
+    draw_max_slot_label(max(solution.keys()))
     canvas.update()
 
 def save_graph():
