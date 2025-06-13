@@ -5,9 +5,9 @@ import tkinter as TK
 from method.heuristic import Heuristic
 from method.sda import SDA
 from save import *
-from summit import generate_graph, shortest_path_tree
+from summit import generate_graph, generate_graph_by_nodes, shortest_path_tree
 
-# Valeurs par défaut
+# Default values
 size = 5
 per_level = 5
 method = Heuristic()
@@ -29,7 +29,7 @@ coordinates = {}
 solution = {}
 iteration = 0
 
-# Dropdown 
+# Dropdown for method
 method_var = TK.StringVar(root)
 method_var.set("Heuristic")
 
@@ -46,7 +46,20 @@ def update_method(*args):
 method_var.trace_add("write", lambda *args: update_method())
 method_menu = TK.OptionMenu(root, method_var, "Heuristic", "SDA")
 
-# Entrées utilisateur pour `size` et `per_level`
+# Dropdown for generation mode
+generation_mode = TK.StringVar(root)
+generation_mode.set("Level-Based")
+generation_menu = TK.OptionMenu(root, generation_mode, "Level-Based", "Node-Based")
+
+def update_generation_mode(*args):
+    if generation_mode.get() == "Level-Based":
+        level_label.config(text="Levels:")
+    else:
+        level_label.config(text="Nodes:")
+
+generation_mode.trace_add("write", lambda *args: update_generation_mode())
+
+# User entries for size and per_level
 size_entry = TK.Entry(root, width=5)
 size_entry.insert(0, "5")
 per_level_entry = TK.Entry(root, width=5)
@@ -80,7 +93,7 @@ def draw_edge(node1, node2, label, color="black"):
     pen.color(color)
     pen.goto(x2, y2)
 
-    if label != "":
+    if label:
         angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
         offset = 25
         pen.teleport(x1 + math.cos(math.radians(angle)) * offset,
@@ -90,39 +103,38 @@ def draw_edge(node1, node2, label, color="black"):
 def generate(from_load=False):
     global graph, solution, iteration, size, per_level
 
-    # Récupère les valeurs depuis les champs
     try:
         size = int(size_entry.get())
         per_level = int(per_level_entry.get())
         screen.screensize(1280, size * 80 + 300)
     except ValueError:
-        print("Les valeurs de taille doivent être des entiers.")
+        print("Size values must be integers.")
         return
 
     if not from_load:
-        graph = generate_graph(size, per_level)
+        if generation_mode.get() == "Level-Based":
+            graph = generate_graph(size, per_level)
+        else:
+            graph = generate_graph_by_nodes(size)
 
     shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
     if not shortest_path:
-        print("Le plus court chemin est vide. Le graphe est probablement mal formé.")
+        print("Shortest path is empty. The graph may be malformed.")
         solution = {}
         return
 
     solution = graph.resolution(shortest_path, method)
     if solution is None:
-        print("Aucun plan de transmission trouvé.")
+        print("No transmission plan found.")
         solution = {}
 
     iteration = -1
     draw()
 
 def draw_max_slot_label(slot):
-    """Display the total number of slots used in the solution at a fixed position."""
     pen.color("black")
-    pen.teleport(-600,size * 40)  
+    pen.teleport(-600, size * 40)
     pen.write(f"Total slots: {slot + 1}", align="left", font=("Arial", 12, "bold"))
-
-
 
 def draw():
     global iteration, coordinates
@@ -178,6 +190,7 @@ def draw():
 
     for node_id, color in color_map.items():
         draw_node(graph.nodes[node_id], color)
+
     draw_max_slot_label(max(solution.keys()))
     canvas.update()
 
@@ -221,7 +234,7 @@ def load_graph_and_close(index, popup):
     load_graph(index)
     popup.destroy()
 
-# Navigation
+# Keyboard navigation
 def scroll_up(event): canvas.yview_scroll(-10, "units")
 def scroll_down(event): canvas.yview_scroll(10, "units")
 def scroll_mouse(event): canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
@@ -250,15 +263,18 @@ TK.Button(root, text="Generate", command=generate).grid(column=1, row=0)
 TK.Button(root, text="Load", command=load_list).grid(column=2, row=0)
 method_menu.grid(column=3, row=0)
 
-TK.Label(root, text="Levels:").grid(column=4, row=0)
+level_label = TK.Label(root, text="Levels:")
+level_label.grid(column=4, row=0)
 size_entry.grid(column=5, row=0)
 
 TK.Label(root, text="Nodes/Level:").grid(column=6, row=0)
 per_level_entry.grid(column=7, row=0)
 
-canvas.grid(column=0, row=1, columnspan=8)
+generation_menu.grid(column=8, row=0)
 
-# Bindings clavier
+canvas.grid(column=0, row=1, columnspan=9)
+
+# Bindings
 canvas.bind_all("<Up>", scroll_up)
 canvas.bind_all("<Down>", scroll_down)
 canvas.bind_all("<MouseWheel>", scroll_mouse)

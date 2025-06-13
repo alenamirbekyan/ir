@@ -30,11 +30,11 @@ class Graph:
         return method.solve(self, shortest_path)
 
     def set_lower_bound(self):
-        """Advance through the node list by level – used to index or initialize lower bounds."""
         current_index = 0
         for i in range(self.height):
-            while self.nodes[current_index].level <= i:
+            while current_index < len(self.nodes) and self.nodes[current_index].level <= i:
                 current_index += 1
+
 
     def toString(self):
         """Return a string representation of the graph in JSON-like format."""
@@ -164,3 +164,60 @@ def shortest_path_tree(graph, root_node, connection, used_childrens):
             used_childrens.append(child_id)
             connection = shortest_path_tree(graph, graph.nodes[child_id], connection, used_childrens)
     return connection
+
+def generate_graph_by_nodes(total_nodes):
+    """
+    Generate a hierarchical graph with a fixed number of nodes (including sink at level 0).
+    The levels and node distributions are randomly chosen.
+    Ensures that every level up to the last has at least one node.
+    """
+    if total_nodes < 1:
+        raise ValueError("Total nodes must be at least 1.")
+
+    num = 0
+    graph = []
+
+    # Sink node at level 0
+    root = Node(0, num)
+    root.color = "red"
+    graph.append(root)
+
+    num += 1
+    current_level = 1
+
+    while num < total_nodes:
+        nodes_this_level = min(randint(1, 5), total_nodes - num)
+        start_index = len(graph)
+
+        previous = None
+        for _ in range(nodes_this_level):
+            node = Node(current_level, num)
+            graph.append(node)
+            if previous and randint(0, 2) == 2:
+                node.add_neighbor(previous)
+            previous = node
+            num += 1
+
+        for i in range(start_index, len(graph)):
+            current_node = graph[i]
+            parent_count = randint(1, min(3, start_index))
+            linked = set()
+            for _ in range(parent_count):
+                parent = graph[randint(0, start_index - 1)]
+                if parent.num not in linked:
+                    current_node.add_parent(parent)
+                    linked.add(parent.num)
+
+        current_level += 1
+
+    # ─────────────────────────────────────
+    # Ensure that all levels exist (safety)
+    # ─────────────────────────────────────
+    used_levels = {node.level for node in graph}
+    for lvl in range(current_level):
+        if lvl not in used_levels:
+            num += 1
+            missing = Node(lvl, num)
+            graph.append(missing)
+    graph.sort(key=lambda node: node.level)  
+    return Graph(graph, current_level)
