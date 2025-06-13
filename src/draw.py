@@ -7,7 +7,9 @@ from method.sda import SDA
 from save import *
 from summit import generate_graph, shortest_path_tree
 
+# Valeurs par défaut
 size = 5
+per_level = 5
 method = Heuristic()
 
 root = TK.Tk()
@@ -27,7 +29,7 @@ coordinates = {}
 solution = {}
 iteration = 0
 
-# Méthode sélectionnée (dropdown)
+# Dropdown pour choisir la méthode
 method_var = TK.StringVar(root)
 method_var.set("Heuristic")
 
@@ -43,6 +45,12 @@ def update_method(*args):
 
 method_var.trace_add("write", lambda *args: update_method())
 method_menu = TK.OptionMenu(root, method_var, "Heuristic", "SDA")
+
+# Entrées utilisateur pour `size` et `per_level`
+size_entry = TK.Entry(root, width=5)
+size_entry.insert(0, "5")
+per_level_entry = TK.Entry(root, width=5)
+per_level_entry.insert(0, "5")
 
 def lighten_color(color_name, factor=0.5):
     rgb_16bit = root.winfo_rgb(color_name)
@@ -80,20 +88,26 @@ def draw_edge(node1, node2, label, color="black"):
         pen.write(label, align="center")
 
 def generate(from_load=False):
-    global graph, solution, iteration
+    global graph, solution, iteration, size, per_level
+
+    # Récupère les valeurs depuis les champs
+    try:
+        size = int(size_entry.get())
+        per_level = int(per_level_entry.get())
+    except ValueError:
+        print("Les valeurs de taille doivent être des entiers.")
+        return
 
     if not from_load:
-        graph = generate_graph(size, 5)
+        graph = generate_graph(size, per_level)
 
     shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
-
     if not shortest_path:
         print("Le plus court chemin est vide. Le graphe est probablement mal formé.")
         solution = {}
         return
 
     solution = graph.resolution(shortest_path, method)
-
     if solution is None:
         print("Aucun plan de transmission trouvé.")
         solution = {}
@@ -111,7 +125,6 @@ def draw():
     nodes_at_level = 0
     index = 0
 
-    # Ne pas enlever : force affichage canvas sinon bug avec turtle
     pen.color("black")
     pen.teleport(0, 0)
     pen.goto(1, 0)
@@ -203,35 +216,38 @@ def load_graph_and_close(index, popup):
 def scroll_up(event): canvas.yview_scroll(-10, "units")
 def scroll_down(event): canvas.yview_scroll(10, "units")
 def scroll_mouse(event): canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
-
 def step_forward(event):
     global iteration
     if solution and iteration < max(solution.keys()):
         iteration += 1
         draw()
-
 def step_backward(event):
     global iteration
     if solution and iteration >= 0:
         iteration -= 1
         draw()
-
 def jump_end(event):
     global iteration
     iteration = max(solution.keys())
     draw()
-
 def jump_start(event):
     global iteration
     iteration = -1
     draw()
 
-# UI
+# UI Layout
 TK.Button(root, text="Save", command=save_graph).grid(column=0, row=0)
 TK.Button(root, text="Generate", command=generate).grid(column=1, row=0)
 TK.Button(root, text="Load", command=load_list).grid(column=2, row=0)
 method_menu.grid(column=3, row=0)
-canvas.grid(column=0, row=1, columnspan=4)
+
+TK.Label(root, text="Levels:").grid(column=4, row=0)
+size_entry.grid(column=5, row=0)
+
+TK.Label(root, text="Nodes/Level:").grid(column=6, row=0)
+per_level_entry.grid(column=7, row=0)
+
+canvas.grid(column=0, row=1, columnspan=8)
 
 # Bindings clavier
 canvas.bind_all("<Up>", scroll_up)
