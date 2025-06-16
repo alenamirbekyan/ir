@@ -1,5 +1,7 @@
+import math
 from math import trunc
 from random import randint
+import random
 
 
 class Graph:
@@ -69,6 +71,11 @@ class Node:
         if node.num not in self.neighbors:
             self.neighbors.append(node.num)
             node.neighbors.append(self.num)
+
+    def remove_neighbor(self, node):
+        if node.num in self.neighbors:
+            self.neighbors.remove(node.num)
+            node.remove_neighbor(self)
 
     def add_parent(self, parent):
         """Add a parent node and set this node as the child of that parent."""
@@ -221,3 +228,45 @@ def generate_graph_by_nodes(total_nodes):
             graph.append(missing)
     graph.sort(key=lambda node: node.level)  
     return Graph(graph, current_level)
+
+
+def generate_scatter_plot(total_nodes, r):
+    num = 0
+    graph = []
+
+    root = Node(0, num)
+
+    graph.append(root)
+    summit = {}
+    summit[0] = {"x":0, "y":0}
+    for i in range(1,total_nodes):
+        s = randint(0, i-1)
+        corner = random.uniform(0, 2 * math.pi)
+        radius = r * math.sqrt(random.uniform(0, 1))  # sqrt pour une densité uniforme
+        x2 = summit[s]["x"] + radius * math.cos(corner)
+        y2 = summit[s]["y"] + radius * math.sin(corner)
+        summit[i] = {"x":x2, "y":y2}
+        node = Node(None, i)
+        for n in range(i):
+            x = summit[n]["x"]
+            y = summit[n]["y"]
+            if((x2 - x) ** 2 + (y2 - y) ** 2 <= r ** 2):
+                node.add_neighbor(graph[n])
+        graph.append(node)
+    max_level = 0
+    for n in graph:
+        for v_ind in n.get_neighbors():
+            v = graph[v_ind]
+            if v.level is None or v.level > n.level+1:
+                v.level = n.level+1
+                if max_level < v.level:
+                    max_level = v.level
+
+    for n in graph:
+        for v_ind in n.get_neighbors():
+            v = graph[v_ind]
+            if v.level > n.level:
+                v.add_parent(n)
+                v.remove_neighbor(n)
+    print(summit)
+    return Graph(graph, max_level)

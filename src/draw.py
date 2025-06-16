@@ -5,7 +5,7 @@ import tkinter as TK
 from method.heuristic import Heuristic
 from method.sda import SDA
 from save import *
-from summit import generate_graph, generate_graph_by_nodes, shortest_path_tree
+from summit import generate_graph, generate_graph_by_nodes, shortest_path_tree, generate_scatter_plot
 
 # Default values
 size = 5
@@ -112,10 +112,11 @@ def generate(from_load=False):
         return
 
     if not from_load:
-        if generation_mode.get() == "Level-Based":
-            graph = generate_graph(size, per_level)
-        else:
-            graph = generate_graph_by_nodes(size)
+        # if generation_mode.get() == "Level-Based":
+        #     graph = generate_graph(size, per_level)
+        # else:
+        #     graph = generate_graph_by_nodes(size)
+        graph = generate_scatter_plot(size, 10)
 
     shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
     if not shortest_path:
