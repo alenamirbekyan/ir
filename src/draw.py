@@ -14,9 +14,12 @@ method = Heuristic()
 max_solution = 0
 root = TK.Tk()
 root.title("Sensor Protocol Visualizer")
+container = TK.Frame(root)
+
+
 
 # Canvas & Turtle
-canvas = turtle.ScrolledCanvas(root, width=1280, height=700)
+canvas = turtle.ScrolledCanvas(container, width=1280, height=700)
 screen = turtle.TurtleScreen(canvas)
 screen.screensize(1280, size * 80 + 300)
 pen = turtle.RawTurtle(screen)
@@ -290,6 +293,27 @@ def jump_start(event):
     iteration = -1
     draw()
 
+def recuit():
+    global solution, graph
+    pass
+
+easter_egg_state = 0
+def easter_egg(event):
+    global easter_egg_state
+    easter_egg_code = "bakadam"
+
+    if(easter_egg_code[easter_egg_state] == event.char):
+        easter_egg_state+=1
+    else:
+        easter_egg_state = 0
+
+    if(easter_egg_state == len(easter_egg_code)):
+        image = TK.PhotoImage(file="../img/adam.png")
+        easter_egg_state = 0
+
+        canvas.create_image(0, 0, image=image)
+        canvas.image = image
+
 # UI Layout
 TK.Button(root, text="Save", command=save_graph).grid(column=0, row=0)
 TK.Button(root, text="Generate", command=generate).grid(column=1, row=0)
@@ -305,7 +329,10 @@ per_level_entry.grid(column=7, row=0)
 
 generation_menu.grid(column=8, row=0)
 
-canvas.grid(column=0, row=1, columnspan=9)
+canvas.grid(column=0, row=0)
+container.grid(column=0, row=1, columnspan=9)
+
+TK.Button(container, text="recuit simulé", command=recuit).grid(column=1, row=0)
 
 # Bindings
 canvas.bind_all("<Up>", scroll_up)
@@ -315,6 +342,7 @@ canvas.bind_all("<Left>", step_backward)
 canvas.bind_all("<Right>", step_forward)
 canvas.bind_all("<F>", jump_end)
 canvas.bind_all("<D>", jump_start)
+canvas.bind_all("<Key>", easter_egg)
 root.bind("<Return>", lambda e: generate())
 
 root.mainloop()
