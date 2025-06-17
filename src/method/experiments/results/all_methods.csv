@@ -1,0 +1,37 @@
+graph_name,num_nodes,height,method,initial_latency,final_latency,iterations,execution_time,nb_slots
+exemple,7,2,SDA,7,7,0,0.0,5
+exemple,7,2,SDA+Recuit,7,7,225,0.0165,5
+exemple,7,2,Heuristic,7,7,0,0.0,5
+exemple,7,2,Heuristic+Recuit,7,7,225,0.0172,5
+10 nodes,10,5,SDA,23,23,0,0.0,5
+10 nodes,10,5,SDA+Recuit,23,23,225,0.023,5
+10 nodes,10,5,Heuristic,23,23,0,0.0,5
+10 nodes,10,5,Heuristic+Recuit,23,23,225,0.0224,5
+20 nodes,20,7,SDA,76,76,0,0.0,9
+20 nodes,20,7,SDA+Recuit,76,76,225,0.0469,9
+20 nodes,20,7,Heuristic,76,76,0,0.0,9
+20 nodes,20,7,Heuristic+Recuit,76,76,225,0.0468,9
+50 nodes,50,11,SDA,179,179,0,0.0,10
+50 nodes,50,11,SDA+Recuit,179,169,225,0.1243,10
+50 nodes,50,11,Heuristic,179,179,0,0.0,10
+50 nodes,50,11,Heuristic+Recuit,179,169,225,0.1368,10
+100 nodes,100,15,SDA,778,778,0,0.0,15
+100 nodes,100,15,SDA+Recuit,778,763,225,0.3595,15
+100 nodes,100,15,Heuristic,778,778,0,0.0,14
+100 nodes,100,15,Heuristic+Recuit,778,749,225,0.2853,14
+200 nodes,200,28,SDA,2702,2702,0,0.0,29
+200 nodes,200,28,SDA+Recuit,2702,2630,225,0.5687,29
+200 nodes,200,28,Heuristic,2702,2702,0,0.0,28
+200 nodes,200,28,Heuristic+Recuit,2702,2611,225,0.5636,28
+500 nodes,500,64,SDA,16814,16814,0,0.0,63
+500 nodes,500,64,SDA+Recuit,16814,16761,225,1.4936,63
+500 nodes,500,64,Heuristic,16814,16814,0,0.0,61
+500 nodes,500,64,Heuristic+Recuit,16814,16793,225,1.5264,61
+1000 nodes,1000,98,SDA,55266,55266,0,0.0,97
+1000 nodes,1000,98,SDA+Recuit,55266,55228,225,3.3685,97
+1000 nodes,1000,98,Heuristic,55266,55266,0,0.0,94
+1000 nodes,1000,98,Heuristic+Recuit,55266,55230,225,3.5588,94
+5000 nodes,5000,181,SDA,491260,491260,0,0.0,181
+5000 nodes,5000,181,SDA+Recuit,491260,491091,225,22.8919,181
+5000 nodes,5000,181,Heuristic,491260,491260,0,0.0,178
+5000 nodes,5000,181,Heuristic+Recuit,491260,491082,225,23.7294,178

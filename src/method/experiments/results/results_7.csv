@@ -1,2 +1,2 @@
 graph_name,num_nodes,height,initial_latency,final_latency,iterations,execution_time,final_temp
-exemple,7,2,7,7,225,0.0156,0.001
+exemple,7,2,7,7,225,0.0164,0.001

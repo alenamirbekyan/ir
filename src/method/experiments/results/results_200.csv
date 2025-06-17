@@ -1,2 +1,2 @@
 graph_name,num_nodes,height,initial_latency,final_latency,iterations,execution_time,final_temp
-200 nodes,200,28,2702,2700,225,0.6485,0.001
+200 nodes,200,28,2702,2616,225,0.6422,0.001
