@@ -189,6 +189,7 @@ def calculate_coordinates():
 
 def draw():
     canvas.delete("all")
+    pen.clear()
 
     pen.color("black")
     pen.teleport(0, 0)
@@ -284,10 +285,12 @@ def step_backward(event):
     if solution and iteration >= 0:
         iteration -= 1
         draw()
+
 def jump_end(event):
     global iteration
     iteration = max_solution
     draw()
+
 def jump_start(event):
     global iteration
     iteration = -1
