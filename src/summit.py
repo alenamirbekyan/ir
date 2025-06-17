@@ -236,19 +236,19 @@ def generate_scatter_plot(total_nodes, r):
 
     graph.append(root)
     summit = {}
-    summit[0] = {"x":0, "y":0}
+    summit[0] = (0,0)
     for i in range(1,total_nodes):
         # s = randint(0, i-1)
         s = i-1
         corner = random.uniform(0, 2 * math.pi)
         radius = r * math.sqrt(random.uniform(0.3, 1))  # sqrt pour une densité uniforme
-        x2 = summit[s]["x"] + radius * math.cos(corner)
-        y2 = summit[s]["y"] + radius * math.sin(corner)
-        summit[i] = {"x":x2, "y":y2}
+        x2 = summit[s][0] + radius * math.cos(corner)
+        y2 = summit[s][1] + radius * math.sin(corner)
+        summit[i] = (x2,y2)
         node = Node(None, i)
         for n in range(i):
-            x = summit[n]["x"]
-            y = summit[n]["y"]
+            x = summit[n][0]
+            y = summit[n][1]
             if((x2 - x) ** 2 + (y2 - y) ** 2 <= r ** 2):
                 node.add_neighbor(graph[n])
         graph.append(node)
@@ -268,5 +268,4 @@ def generate_scatter_plot(total_nodes, r):
             if v.level > n.level:
                 v.add_parent(n)
                 v.remove_neighbor(n)
-    print(summit)
-    return Graph(graph, max_level)
+    return (summit,Graph(graph, max_level))

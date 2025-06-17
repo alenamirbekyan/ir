@@ -11,7 +11,7 @@ from summit import generate_graph, shortest_path_tree, generate_scatter_plot
 size = 5
 per_level = 5
 method = Heuristic()
-
+max_solution = 0
 root = TK.Tk()
 root.title("Sensor Protocol Visualizer")
 
@@ -101,12 +101,13 @@ def draw_edge(node1, node2, label, color="black"):
         pen.write(label, align="center")
 
 def generate(from_load=False):
-    global graph, solution, iteration, size, per_level
+    global graph, solution, iteration, size, per_level, coordinates, max_solution
 
     try:
         size = int(size_entry.get())
         per_level = int(per_level_entry.get())
         screen.screensize(1280, size * 80 + 300)
+
     except ValueError:
         print("Size values must be integers.")
         return
@@ -115,7 +116,9 @@ def generate(from_load=False):
         if generation_mode.get() == "Level-Based":
             graph = generate_graph(size, per_level)
         else:
-            graph = generate_scatter_plot(size, 10)
+            res = generate_scatter_plot(size, 100)
+            graph = res[1]
+            coordinates = res[0]
 
 
     shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
@@ -128,27 +131,35 @@ def generate(from_load=False):
     if solution is None:
         print("No transmission plan found.")
         solution = {}
+    else:
+        max_solution = max(solution.keys())
 
     iteration = -1
-    draw()
+
+    if generation_mode.get() == "Level-Based":
+        calculate_coordinates()
+    else:
+        screen.screensize(10000,10000)
+        draw()
+
 
 def draw_max_slot_label(slot):
     pen.color("black")
     pen.teleport(-600, size * 40)
     pen.write(f"Total slots: {slot + 1}", align="left", font=("Arial", 12, "bold"))
 
-def draw():
-    global iteration, coordinates
+def calculate_coordinates():
+    global iteration, coordinates, screen
 
-    canvas.delete("all")
-    visited_edges = []
     coordinates = {}
     nodes_at_level = 0
 
-    pen.color("black")
-    pen.teleport(0, 0)
-    pen.goto(1, 0)
     index_by_level = {}
+
+    max_x = 0
+    min_x = 0
+    max_y = 0
+    min_y = 0
 
     for node in graph.nodes:
         if node.level in index_by_level.keys():
@@ -157,8 +168,31 @@ def draw():
             index_by_level[node.level] = 0
         nodes_at_level = graph.count_nodes_in_level(node.level)
 
-        coordinates[node.num] = (-600 + 1000 / (nodes_at_level + 1) * (index_by_level[node.level] + 1),
-                                 size * 40 - 80 * node.level)
+        x = -600 + 1000 / (nodes_at_level + 1) * (index_by_level[node.level] + 1)
+        y = size * 40 - 80 * node.level
+
+        if x>max_x:
+            max_x = x
+        elif x<min_x:
+            min_x = x
+
+        if y>max_y:
+            max_y = y
+        elif y<min_y:
+            min_y = y
+
+        coordinates[node.num] = (x,y)
+    draw()
+
+def draw():
+    canvas.delete("all")
+
+    pen.color("black")
+    pen.teleport(0, 0)
+    pen.goto(1, 0)
+
+    global coordinates, graph
+    visited_edges = []
 
     for k in coordinates.keys():
         for v in graph.nodes[k].get_neighbors():
@@ -239,7 +273,7 @@ def scroll_down(event): canvas.yview_scroll(10, "units")
 def scroll_mouse(event): canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 def step_forward(event):
     global iteration
-    if solution and iteration < max(solution.keys()):
+    if solution and iteration < max_solution:
         iteration += 1
         draw()
 def step_backward(event):
@@ -249,7 +283,7 @@ def step_backward(event):
         draw()
 def jump_end(event):
     global iteration
-    iteration = max(solution.keys())
+    iteration = max_solution
     draw()
 def jump_start(event):
     global iteration

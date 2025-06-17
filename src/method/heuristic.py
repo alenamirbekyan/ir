@@ -3,7 +3,6 @@ from method.method import Methode
 class Heuristic(Methode):
 
     def solve(self, graph, shortest_paths=[]):
-        print("Starting Heuristic Protocol")
 
         solution = {}
         children_score = {}
@@ -67,5 +66,4 @@ class Heuristic(Methode):
 
             slot += 1
 
-        print("Heuristic transmission plan:", solution)
         return solution
