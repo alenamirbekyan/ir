@@ -23,8 +23,6 @@ class Graph:
         for node in self.nodes:
             if node.level == level:
                 count += 1
-            elif node.level > level:
-                return count
         return count
 
     def resolution(self, shortest_path, method):
@@ -172,62 +170,62 @@ def shortest_path_tree(graph, root_node, connection, used_childrens):
             connection = shortest_path_tree(graph, graph.nodes[child_id], connection, used_childrens)
     return connection
 
-def generate_graph_by_nodes(total_nodes):
-    """
-    Generate a hierarchical graph with a fixed number of nodes (including sink at level 0).
-    The levels and node distributions are randomly chosen.
-    Ensures that every level up to the last has at least one node.
-    """
-    if total_nodes < 1:
-        raise ValueError("Total nodes must be at least 1.")
-
-    num = 0
-    graph = []
-
-    # Sink node at level 0
-    root = Node(0, num)
-    root.color = "red"
-    graph.append(root)
-
-    num += 1
-    current_level = 1
-
-    while num < total_nodes:
-        nodes_this_level = min(randint(1, 5), total_nodes - num)
-        start_index = len(graph)
-
-        previous = None
-        for _ in range(nodes_this_level):
-            node = Node(current_level, num)
-            graph.append(node)
-            if previous and randint(0, 2) == 2:
-                node.add_neighbor(previous)
-            previous = node
-            num += 1
-
-        for i in range(start_index, len(graph)):
-            current_node = graph[i]
-            parent_count = randint(1, min(3, start_index))
-            linked = set()
-            for _ in range(parent_count):
-                parent = graph[randint(0, start_index - 1)]
-                if parent.num not in linked:
-                    current_node.add_parent(parent)
-                    linked.add(parent.num)
-
-        current_level += 1
-
-    # ─────────────────────────────────────
-    # Ensure that all levels exist (safety)
-    # ─────────────────────────────────────
-    used_levels = {node.level for node in graph}
-    for lvl in range(current_level):
-        if lvl not in used_levels:
-            num += 1
-            missing = Node(lvl, num)
-            graph.append(missing)
-    graph.sort(key=lambda node: node.level)  
-    return Graph(graph, current_level)
+# def generate_graph_by_nodes(total_nodes):
+#     """
+#     Generate a hierarchical graph with a fixed number of nodes (including sink at level 0).
+#     The levels and node distributions are randomly chosen.
+#     Ensures that every level up to the last has at least one node.
+#     """
+#     if total_nodes < 1:
+#         raise ValueError("Total nodes must be at least 1.")
+#
+#     num = 0
+#     graph = []
+#
+#     # Sink node at level 0
+#     root = Node(0, num)
+#     root.color = "red"
+#     graph.append(root)
+#
+#     num += 1
+#     current_level = 1
+#
+#     while num < total_nodes:
+#         nodes_this_level = min(randint(1, 5), total_nodes - num)
+#         start_index = len(graph)
+#
+#         previous = None
+#         for _ in range(nodes_this_level):
+#             node = Node(current_level, num)
+#             graph.append(node)
+#             if previous and randint(0, 2) == 2:
+#                 node.add_neighbor(previous)
+#             previous = node
+#             num += 1
+#
+#         for i in range(start_index, len(graph)):
+#             current_node = graph[i]
+#             parent_count = randint(1, min(3, start_index))
+#             linked = set()
+#             for _ in range(parent_count):
+#                 parent = graph[randint(0, start_index - 1)]
+#                 if parent.num not in linked:
+#                     current_node.add_parent(parent)
+#                     linked.add(parent.num)
+#
+#         current_level += 1
+#
+#     # ─────────────────────────────────────
+#     # Ensure that all levels exist (safety)
+#     # ─────────────────────────────────────
+#     used_levels = {node.level for node in graph}
+#     for lvl in range(current_level):
+#         if lvl not in used_levels:
+#             num += 1
+#             missing = Node(lvl, num)
+#             graph.append(missing)
+#     graph.sort(key=lambda node: node.level)
+#     return Graph(graph, current_level)
 
 
 def generate_scatter_plot(total_nodes, r):
@@ -240,9 +238,10 @@ def generate_scatter_plot(total_nodes, r):
     summit = {}
     summit[0] = {"x":0, "y":0}
     for i in range(1,total_nodes):
-        s = randint(0, i-1)
+        # s = randint(0, i-1)
+        s = i-1
         corner = random.uniform(0, 2 * math.pi)
-        radius = r * math.sqrt(random.uniform(0, 1))  # sqrt pour une densité uniforme
+        radius = r * math.sqrt(random.uniform(0.3, 1))  # sqrt pour une densité uniforme
         x2 = summit[s]["x"] + radius * math.cos(corner)
         y2 = summit[s]["y"] + radius * math.sin(corner)
         summit[i] = {"x":x2, "y":y2}
@@ -263,7 +262,8 @@ def generate_scatter_plot(total_nodes, r):
                     max_level = v.level
 
     for n in graph:
-        for v_ind in n.get_neighbors():
+        voisins = n.get_neighbors().copy()
+        for v_ind in voisins:
             v = graph[v_ind]
             if v.level > n.level:
                 v.add_parent(n)

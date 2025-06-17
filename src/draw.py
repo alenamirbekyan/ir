@@ -5,7 +5,7 @@ import tkinter as TK
 from method.heuristic import Heuristic
 from method.sda import SDA
 from save import *
-from summit import generate_graph, generate_graph_by_nodes, shortest_path_tree, generate_scatter_plot
+from summit import generate_graph, shortest_path_tree, generate_scatter_plot
 
 # Default values
 size = 5
@@ -112,11 +112,11 @@ def generate(from_load=False):
         return
 
     if not from_load:
-        # if generation_mode.get() == "Level-Based":
-        #     graph = generate_graph(size, per_level)
-        # else:
-        #     graph = generate_graph_by_nodes(size)
-        graph = generate_scatter_plot(size, 10)
+        if generation_mode.get() == "Level-Based":
+            graph = generate_graph(size, per_level)
+        else:
+            graph = generate_scatter_plot(size, 10)
+
 
     shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
     if not shortest_path:
@@ -143,24 +143,22 @@ def draw():
     canvas.delete("all")
     visited_edges = []
     coordinates = {}
-    current_level = math.inf
     nodes_at_level = 0
-    index = 0
 
     pen.color("black")
     pen.teleport(0, 0)
     pen.goto(1, 0)
+    index_by_level = {}
 
     for node in graph.nodes:
-        if current_level == node.level:
-            index += 1
+        if node.level in index_by_level.keys():
+            index_by_level[node.level] += 1
         else:
-            index = 0
-            current_level = node.level
-            nodes_at_level = graph.count_nodes_in_level(current_level)
+            index_by_level[node.level] = 0
+        nodes_at_level = graph.count_nodes_in_level(node.level)
 
-        coordinates[node.num] = (-600 + 1000 / (nodes_at_level + 1) * (index + 1),
-                                 size * 40 - 80 * current_level)
+        coordinates[node.num] = (-600 + 1000 / (nodes_at_level + 1) * (index_by_level[node.level] + 1),
+                                 size * 40 - 80 * node.level)
 
     for k in coordinates.keys():
         for v in graph.nodes[k].get_neighbors():
