@@ -1,0 +1,92 @@
+{
+  "name": "exemple_metro2_slots4_iter0",
+  "height": 2,
+  "node": [
+    {
+      "num": 0,
+      "level": 0,
+      "parents": [],
+      "neighbors": [],
+      "childrens": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "color": "red",
+      "receiver": null
+    },
+    {
+      "num": 1,
+      "level": 1,
+      "parents": [
+        2
+      ],
+      "neighbors": [],
+      "childrens": [
+        6
+      ],
+      "color": "black",
+      "receiver": 2
+    },
+    {
+      "num": 2,
+      "level": 1,
+      "parents": [
+        0
+      ],
+      "neighbors": [],
+      "childrens": [
+        6,
+        1
+      ],
+      "color": "black",
+      "receiver": 0
+    },
+    {
+      "num": 3,
+      "level": 1,
+      "parents": [
+        0
+      ],
+      "neighbors": [],
+      "childrens": [],
+      "color": "black",
+      "receiver": 0
+    },
+    {
+      "num": 4,
+      "level": 1,
+      "parents": [
+        0
+      ],
+      "neighbors": [],
+      "childrens": [],
+      "color": "black",
+      "receiver": 0
+    },
+    {
+      "num": 5,
+      "level": 1,
+      "parents": [
+        0
+      ],
+      "neighbors": [],
+      "childrens": [],
+      "color": "black",
+      "receiver": 0
+    },
+    {
+      "num": 6,
+      "level": 2,
+      "parents": [
+        1,
+        2
+      ],
+      "neighbors": [],
+      "childrens": [],
+      "color": "black",
+      "receiver": 1
+    }
+  ]
+}
