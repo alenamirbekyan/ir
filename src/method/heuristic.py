@@ -96,7 +96,7 @@ class Heuristic(Methode):
 
             slot += 1
 
-        print(solution)
+        # print(solution)
         if iteration == 1000:
             return None
         return solution

@@ -1,6 +1,7 @@
 import math
 import turtle as turtle
 import tkinter as TK
+from random import random
 
 from method.heuristic import Heuristic
 from method.sda import SDA
@@ -15,7 +16,8 @@ max_solution = 0
 root = TK.Tk()
 root.title("Sensor Protocol Visualizer")
 container = TK.Frame(root)
-
+left_container = TK.Frame(container)
+max_label = TK.Label(left_container, text="Max :")
 
 
 # Canvas & Turtle
@@ -136,7 +138,7 @@ def generate(from_load=False):
         print("No transmission plan found.")
         solution = {}
     else:
-        max_solution = max(solution.keys())
+        max_solution = max(solution.keys())+1
 
     iteration = -1
 
@@ -189,6 +191,7 @@ def calculate_coordinates():
     draw()
 
 def draw():
+    global max_solution, max_label
     canvas.delete("all")
     pen.clear()
 
@@ -229,7 +232,8 @@ def draw():
     for node_id, color in color_map.items():
         draw_node(graph.nodes[node_id], color)
 
-    draw_max_slot_label(max(solution.keys()))
+    # draw_max_slot_label(max(solution.keys()))
+    max_label.config(text = "Max : " + str(max_solution))
     canvas.update()
 
 def save_graph():
@@ -299,32 +303,49 @@ def jump_start(event):
 
 def recuit():
     global solution, graph, max_solution, iteration
-    info = lose_time_summit(solution, graph)
-    solution = graph.resolution(shortest_path, method, info[1])
-    if solution is None:
-        print("No transmission plan found.")
-        solution = {}
-    else:
-        max_solution = max(solution.keys())
-        iteration = max_solution
-        draw()
+    best_solution = solution
+    best_max_solution = max_solution
+    for i in range(500):
+        info = lose_time_summit(solution, graph)
+        new_solution = graph.resolution(shortest_path, method, info[1])
+        if new_solution is None:
+            print("No transmission plan found.")
+            solution = {}
+        else:
+            new_max_solution = max(new_solution.keys())+1
+            iteration = new_max_solution
+            delta = new_max_solution - max_solution
+            if delta<0:
+                best_solution = new_solution
+                best_max_solution = new_max_solution
+                solution = new_solution
+                max_solution = new_max_solution
+            elif random() > 0.5:
+                solution = new_solution
+                max_solution = new_max_solution
 
-easter_egg_state = 0
+    solution = best_solution
+    max_solution = best_max_solution
+    print("fini")
+    draw()
+
+easter_egg_state = [{"indice":0, "text": "bakadam", "img":"../img/adam.png"},
+                    {"indice":0, "text": "mario", "img":"../img/mario.png"},
+                    {"indice":0, "text": "antoinette", "img":"../img/mario.png"}]
 def easter_egg(event):
     global easter_egg_state
-    easter_egg_code = "bakadam"
+    for easter_egg in easter_egg_state:
+        if(easter_egg["text"][easter_egg["indice"]] == event.char):
+            easter_egg["indice"]+=1
+        else:
+            easter_egg["indice"] = 0
 
-    if(easter_egg_code[easter_egg_state] == event.char):
-        easter_egg_state+=1
-    else:
-        easter_egg_state = 0
+        if(easter_egg["indice"] == len(easter_egg["text"])):
+            image = TK.PhotoImage(file=easter_egg["img"])
+            easter_egg["indice"] = 0
 
-    if(easter_egg_state == len(easter_egg_code)):
-        image = TK.PhotoImage(file="../img/adam.png")
-        easter_egg_state = 0
-
-        canvas.create_image(0, 0, image=image)
-        canvas.image = image
+            canvas.create_image(0, 0, image=image)
+            canvas.image = image
 
 # UI Layout
 TK.Button(root, text="Save", command=save_graph).grid(column=0, row=0)
@@ -344,7 +365,11 @@ generation_menu.grid(column=8, row=0)
 canvas.grid(column=0, row=0)
 container.grid(column=0, row=1, columnspan=9)
 
-TK.Button(container, text="recuit simulé", command=recuit).grid(column=1, row=0)
+left_container.grid(column = 1, row=0)
+
+max_label.grid(column = 0, row=0)
+
+TK.Button(left_container, text="recuit simulé", command=recuit).grid(column=0, row=1)
 
 # Bindings
 canvas.bind_all("<Up>", scroll_up)

@@ -282,5 +282,5 @@ def lose_time_summit(solution, graph):
                 late = tempo
                 node = couple[0]
                 res = couple
-    print((late, res))
+    # print((late, res))
     return (late, res)
