@@ -11,7 +11,7 @@ def compute_nb_slots(graph):
     edges = shortest_path_tree(graph, root, [], [])
     planning = graph.resolution(edges, SDA())
     if isinstance(planning, dict) and planning:
-        return max(slot for slot in planning) + 1
+        return max(planning.keys()) + 1
     return 0
 
 
@@ -71,7 +71,7 @@ def metropolis(graph, initial_temp=100.0, cooling_rate=0.95, max_iterations=500)
         if T < 0.001:
             break
 
-    elapsed_time = time.time() + start_time
+    elapsed_time = time.time() - start_time
 
     return {
         "best_graph": best_solution,
@@ -80,4 +80,3 @@ def metropolis(graph, initial_temp=100.0, cooling_rate=0.95, max_iterations=500)
         "time": elapsed_time,
         "final_temp": T
     }
-

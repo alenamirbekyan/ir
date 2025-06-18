@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
 pandas
 matplotlib
 numpy
+seaborn
+networkx
+>>>>>>> Stashed changes
