@@ -1,8 +1,10 @@
+from random import randint
+
 from method.method import Methode
 
 class Heuristic(Methode):
 
-    def solve(self, graph, shortest_paths=[]):
+    def solve(self, graph, recuit, shortest_paths=[]):
 
         solution = {}
         children_score = {}
@@ -21,10 +23,38 @@ class Heuristic(Methode):
 
         sent = set()
         slot = 0
+        occupied_receivers = set()
+
+        first = False
+
+        if recuit:
+            node = graph.nodes[recuit[0]]
+            possible_node = node.get_childrens() + node.get_neighbors() + node.get_parents()
+            possible_node.remove(recuit[1])
+            for n_id in possible_node:
+                n = graph.nodes[n_id]
+                if len(n.get_childrens() + n.get_neighbors() + n.get_parents()) == 1:
+                    possible_node.remove(n_id)
+            if(len(possible_node) == 0):
+                return None
+            random_node = possible_node[randint(0, len(possible_node)-1)]
+            print(random_node)
+            solution[0] = [(recuit[0], random_node)]
+            sent.add(recuit[0])
+            occupied_receivers.add(recuit[0])
+            occupied_receivers.add(random_node)
+            graph.nodes[recuit[0]].textOnSend = 0
+            graph.nodes[recuit[0]].receiver = random_node
+            first = True
 
         # Step 3: Slot-based scheduling
-        while len(sent) < len(graph.nodes) - 1:
-            occupied_receivers = set()
+        iteration = 0
+        while len(sent) < len(graph.nodes) - 1 and iteration < 1000:
+            iteration+=1
+            if(not (recuit and first)):
+                occupied_receivers = set()
+            else:
+                first = False
 
             for node_id in sorted_nodes.keys():
                 if node_id in sent or node_id in occupied_receivers:
@@ -66,4 +96,7 @@ class Heuristic(Methode):
 
             slot += 1
 
+        print(solution)
+        if iteration == 1000:
+            return None
         return solution

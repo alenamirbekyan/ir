@@ -1,7 +1,7 @@
 from method.method import Methode
 
 class SDA(Methode):
-    def solve(self, graph, shortest_path=[]):
+    def solve(self, graph, recuit, shortest_path=[]):
         # print("Starting SDA protocol")
         # print("Initial shortest path tree:", shortest_path)
 

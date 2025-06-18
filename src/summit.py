@@ -25,9 +25,9 @@ class Graph:
                 count += 1
         return count
 
-    def resolution(self, shortest_path, method):
+    def resolution(self, shortest_path, method, recuit = None):
         """Apply the given method (SDA or Heuristic) on the graph."""
-        return method.solve(self, shortest_path)
+        return method.solve(self, recuit, shortest_path )
 
     def set_lower_bound(self):
         current_index = 0
@@ -269,3 +269,18 @@ def generate_scatter_plot(total_nodes, r):
                 v.add_parent(n)
                 v.remove_neighbor(n)
     return (summit,Graph(graph, max_level))
+
+
+def lose_time_summit(solution, graph):
+    late = 0
+    node = None
+    res = None
+    for k in solution.keys():
+        for couple in solution[k]:
+            tempo = k - (graph.height - graph.nodes[couple[0]].level) - late
+            if (tempo) > late:
+                late = tempo
+                node = couple[0]
+                res = couple
+    print((late, res))
+    return (late, res)

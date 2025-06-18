@@ -1,5 +1,5 @@
 {
-    "nombre": 8,
+    "nombre": 12,
     "graphes": [
         {
             "height": 2,
@@ -41273,6 +41273,2013 @@
                 }
             ],
             "name": "1000 nodes"
+        },
+        {
+            "height": 5,
+            "node": [
+                {
+                    "num": 0,
+                    "level": 0,
+                    "color": "red",
+                    "parents": [],
+                    "neighbors": [],
+                    "childrens": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ]
+                },
+                {
+                    "num": 1,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [
+                        2
+                    ],
+                    "childrens": [
+                        6,
+                        7
+                    ]
+                },
+                {
+                    "num": 2,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [
+                        1
+                    ],
+                    "childrens": [
+                        6
+                    ]
+                },
+                {
+                    "num": 3,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        6
+                    ]
+                },
+                {
+                    "num": 4,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        7
+                    ]
+                },
+                {
+                    "num": 5,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 6,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        2,
+                        3,
+                        1
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 7,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        1,
+                        4
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        8
+                    ]
+                },
+                {
+                    "num": 8,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        7
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        9,
+                        10,
+                        11,
+                        12
+                    ]
+                },
+                {
+                    "num": 9,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        8
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        13
+                    ]
+                },
+                {
+                    "num": 10,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        8
+                    ],
+                    "neighbors": [
+                        11
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 11,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        8
+                    ],
+                    "neighbors": [
+                        10
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 12,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        8
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        13
+                    ]
+                },
+                {
+                    "num": 13,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        12,
+                        9
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                }
+            ],
+            "name": "tempo"
+        },
+        {
+            "height": 5,
+            "node": [
+                {
+                    "num": 0,
+                    "level": 0,
+                    "color": "red",
+                    "parents": [],
+                    "neighbors": [],
+                    "childrens": [
+                        1
+                    ]
+                },
+                {
+                    "num": 1,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        2
+                    ]
+                },
+                {
+                    "num": 2,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        1
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        3,
+                        4
+                    ]
+                },
+                {
+                    "num": 3,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        2
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        5,
+                        8
+                    ]
+                },
+                {
+                    "num": 4,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        2
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        6,
+                        7
+                    ]
+                },
+                {
+                    "num": 5,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        3
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        11
+                    ]
+                },
+                {
+                    "num": 6,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        4
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        10,
+                        11,
+                        12
+                    ]
+                },
+                {
+                    "num": 7,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        4
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        9
+                    ]
+                },
+                {
+                    "num": 8,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        3
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        9,
+                        11,
+                        12
+                    ]
+                },
+                {
+                    "num": 9,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        7,
+                        8
+                    ],
+                    "neighbors": [
+                        10
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 10,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        6
+                    ],
+                    "neighbors": [
+                        9,
+                        11
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 11,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        5,
+                        8,
+                        6
+                    ],
+                    "neighbors": [
+                        10,
+                        12
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 12,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        6,
+                        8
+                    ],
+                    "neighbors": [
+                        11
+                    ],
+                    "childrens": []
+                }
+            ],
+            "name": "exemple random"
+        },
+        {
+            "height": 40,
+            "node": [
+                {
+                    "num": 0,
+                    "level": 0,
+                    "color": "red",
+                    "parents": [],
+                    "neighbors": [],
+                    "childrens": [
+                        1,
+                        2
+                    ]
+                },
+                {
+                    "num": 1,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        4,
+                        5,
+                        6
+                    ]
+                },
+                {
+                    "num": 2,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        3,
+                        4,
+                        6,
+                        7
+                    ]
+                },
+                {
+                    "num": 3,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        2
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        9
+                    ]
+                },
+                {
+                    "num": 4,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        2,
+                        1
+                    ],
+                    "neighbors": [
+                        5
+                    ],
+                    "childrens": [
+                        8
+                    ]
+                },
+                {
+                    "num": 5,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        1
+                    ],
+                    "neighbors": [
+                        4,
+                        6
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 6,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        1,
+                        2
+                    ],
+                    "neighbors": [
+                        5
+                    ],
+                    "childrens": [
+                        8
+                    ]
+                },
+                {
+                    "num": 7,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        2
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        9
+                    ]
+                },
+                {
+                    "num": 8,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        6,
+                        4
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        10,
+                        11
+                    ]
+                },
+                {
+                    "num": 9,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        3,
+                        7
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        12
+                    ]
+                },
+                {
+                    "num": 10,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        8
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        13,
+                        15,
+                        16,
+                        17
+                    ]
+                },
+                {
+                    "num": 11,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        8
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        15
+                    ]
+                },
+                {
+                    "num": 12,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        9
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        14,
+                        16,
+                        17
+                    ]
+                },
+                {
+                    "num": 13,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        10
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        18,
+                        19
+                    ]
+                },
+                {
+                    "num": 14,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        12
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        18,
+                        19,
+                        20
+                    ]
+                },
+                {
+                    "num": 15,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        10,
+                        11
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        20
+                    ]
+                },
+                {
+                    "num": 16,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        12,
+                        10
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        18,
+                        20
+                    ]
+                },
+                {
+                    "num": 17,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        10,
+                        12
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 18,
+                    "level": 6,
+                    "color": "black",
+                    "parents": [
+                        14,
+                        16,
+                        13
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        21,
+                        23
+                    ]
+                },
+                {
+                    "num": 19,
+                    "level": 6,
+                    "color": "black",
+                    "parents": [
+                        14,
+                        13
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        24
+                    ]
+                },
+                {
+                    "num": 20,
+                    "level": 6,
+                    "color": "black",
+                    "parents": [
+                        15,
+                        16,
+                        14
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        21,
+                        22,
+                        23
+                    ]
+                },
+                {
+                    "num": 21,
+                    "level": 7,
+                    "color": "black",
+                    "parents": [
+                        18,
+                        20
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        25
+                    ]
+                },
+                {
+                    "num": 22,
+                    "level": 7,
+                    "color": "black",
+                    "parents": [
+                        20
+                    ],
+                    "neighbors": [
+                        23
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 23,
+                    "level": 7,
+                    "color": "black",
+                    "parents": [
+                        18,
+                        20
+                    ],
+                    "neighbors": [
+                        22
+                    ],
+                    "childrens": [
+                        25
+                    ]
+                },
+                {
+                    "num": 24,
+                    "level": 7,
+                    "color": "black",
+                    "parents": [
+                        19
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        25
+                    ]
+                },
+                {
+                    "num": 25,
+                    "level": 8,
+                    "color": "black",
+                    "parents": [
+                        24,
+                        21,
+                        23
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        26
+                    ]
+                },
+                {
+                    "num": 26,
+                    "level": 9,
+                    "color": "black",
+                    "parents": [
+                        25
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        27,
+                        28,
+                        29,
+                        30
+                    ]
+                },
+                {
+                    "num": 27,
+                    "level": 10,
+                    "color": "black",
+                    "parents": [
+                        26
+                    ],
+                    "neighbors": [
+                        28
+                    ],
+                    "childrens": [
+                        31,
+                        33,
+                        34,
+                        35
+                    ]
+                },
+                {
+                    "num": 28,
+                    "level": 10,
+                    "color": "black",
+                    "parents": [
+                        26
+                    ],
+                    "neighbors": [
+                        27
+                    ],
+                    "childrens": [
+                        35
+                    ]
+                },
+                {
+                    "num": 29,
+                    "level": 10,
+                    "color": "black",
+                    "parents": [
+                        26
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        31,
+                        32
+                    ]
+                },
+                {
+                    "num": 30,
+                    "level": 10,
+                    "color": "black",
+                    "parents": [
+                        26
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        32,
+                        34,
+                        35
+                    ]
+                },
+                {
+                    "num": 31,
+                    "level": 11,
+                    "color": "black",
+                    "parents": [
+                        29,
+                        27
+                    ],
+                    "neighbors": [
+                        32
+                    ],
+                    "childrens": [
+                        39
+                    ]
+                },
+                {
+                    "num": 32,
+                    "level": 11,
+                    "color": "black",
+                    "parents": [
+                        30,
+                        29
+                    ],
+                    "neighbors": [
+                        31
+                    ],
+                    "childrens": [
+                        36
+                    ]
+                },
+                {
+                    "num": 33,
+                    "level": 11,
+                    "color": "black",
+                    "parents": [
+                        27
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        37
+                    ]
+                },
+                {
+                    "num": 34,
+                    "level": 11,
+                    "color": "black",
+                    "parents": [
+                        30,
+                        27
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        36
+                    ]
+                },
+                {
+                    "num": 35,
+                    "level": 11,
+                    "color": "black",
+                    "parents": [
+                        30,
+                        27,
+                        28
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        36,
+                        38,
+                        39
+                    ]
+                },
+                {
+                    "num": 36,
+                    "level": 12,
+                    "color": "black",
+                    "parents": [
+                        32,
+                        35,
+                        34
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 37,
+                    "level": 12,
+                    "color": "black",
+                    "parents": [
+                        33
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 38,
+                    "level": 12,
+                    "color": "black",
+                    "parents": [
+                        35
+                    ],
+                    "neighbors": [
+                        39
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 39,
+                    "level": 12,
+                    "color": "black",
+                    "parents": [
+                        35,
+                        31
+                    ],
+                    "neighbors": [
+                        38
+                    ],
+                    "childrens": [
+                        40
+                    ]
+                },
+                {
+                    "num": 40,
+                    "level": 13,
+                    "color": "black",
+                    "parents": [
+                        39
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        41,
+                        42,
+                        43,
+                        44
+                    ]
+                },
+                {
+                    "num": 41,
+                    "level": 14,
+                    "color": "black",
+                    "parents": [
+                        40
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        46,
+                        48
+                    ]
+                },
+                {
+                    "num": 42,
+                    "level": 14,
+                    "color": "black",
+                    "parents": [
+                        40
+                    ],
+                    "neighbors": [
+                        43
+                    ],
+                    "childrens": [
+                        45,
+                        47
+                    ]
+                },
+                {
+                    "num": 43,
+                    "level": 14,
+                    "color": "black",
+                    "parents": [
+                        40
+                    ],
+                    "neighbors": [
+                        42
+                    ],
+                    "childrens": [
+                        45,
+                        46
+                    ]
+                },
+                {
+                    "num": 44,
+                    "level": 14,
+                    "color": "black",
+                    "parents": [
+                        40
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        47,
+                        48
+                    ]
+                },
+                {
+                    "num": 45,
+                    "level": 15,
+                    "color": "black",
+                    "parents": [
+                        42,
+                        43
+                    ],
+                    "neighbors": [
+                        46
+                    ],
+                    "childrens": [
+                        50,
+                        51
+                    ]
+                },
+                {
+                    "num": 46,
+                    "level": 15,
+                    "color": "black",
+                    "parents": [
+                        43,
+                        41
+                    ],
+                    "neighbors": [
+                        45
+                    ],
+                    "childrens": [
+                        49,
+                        50,
+                        52
+                    ]
+                },
+                {
+                    "num": 47,
+                    "level": 15,
+                    "color": "black",
+                    "parents": [
+                        42,
+                        44
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        52
+                    ]
+                },
+                {
+                    "num": 48,
+                    "level": 15,
+                    "color": "black",
+                    "parents": [
+                        44,
+                        41
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        52
+                    ]
+                },
+                {
+                    "num": 49,
+                    "level": 16,
+                    "color": "black",
+                    "parents": [
+                        46
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        55
+                    ]
+                },
+                {
+                    "num": 50,
+                    "level": 16,
+                    "color": "black",
+                    "parents": [
+                        45,
+                        46
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        53,
+                        54,
+                        56
+                    ]
+                },
+                {
+                    "num": 51,
+                    "level": 16,
+                    "color": "black",
+                    "parents": [
+                        45
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        53,
+                        56
+                    ]
+                },
+                {
+                    "num": 52,
+                    "level": 16,
+                    "color": "black",
+                    "parents": [
+                        47,
+                        46,
+                        48
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 53,
+                    "level": 17,
+                    "color": "black",
+                    "parents": [
+                        50,
+                        51
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 54,
+                    "level": 17,
+                    "color": "black",
+                    "parents": [
+                        50
+                    ],
+                    "neighbors": [
+                        55
+                    ],
+                    "childrens": [
+                        57
+                    ]
+                },
+                {
+                    "num": 55,
+                    "level": 17,
+                    "color": "black",
+                    "parents": [
+                        49
+                    ],
+                    "neighbors": [
+                        54,
+                        56
+                    ],
+                    "childrens": [
+                        57,
+                        58
+                    ]
+                },
+                {
+                    "num": 56,
+                    "level": 17,
+                    "color": "black",
+                    "parents": [
+                        51,
+                        50
+                    ],
+                    "neighbors": [
+                        55
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 57,
+                    "level": 18,
+                    "color": "black",
+                    "parents": [
+                        54,
+                        55
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        59
+                    ]
+                },
+                {
+                    "num": 58,
+                    "level": 18,
+                    "color": "black",
+                    "parents": [
+                        55
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 59,
+                    "level": 19,
+                    "color": "black",
+                    "parents": [
+                        57
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        60
+                    ]
+                },
+                {
+                    "num": 60,
+                    "level": 20,
+                    "color": "black",
+                    "parents": [
+                        59
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        61
+                    ]
+                },
+                {
+                    "num": 61,
+                    "level": 21,
+                    "color": "black",
+                    "parents": [
+                        60
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        62,
+                        63
+                    ]
+                },
+                {
+                    "num": 62,
+                    "level": 22,
+                    "color": "black",
+                    "parents": [
+                        61
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        64,
+                        67
+                    ]
+                },
+                {
+                    "num": 63,
+                    "level": 22,
+                    "color": "black",
+                    "parents": [
+                        61
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        65,
+                        66
+                    ]
+                },
+                {
+                    "num": 64,
+                    "level": 23,
+                    "color": "black",
+                    "parents": [
+                        62
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 65,
+                    "level": 23,
+                    "color": "black",
+                    "parents": [
+                        63
+                    ],
+                    "neighbors": [
+                        66
+                    ],
+                    "childrens": [
+                        68
+                    ]
+                },
+                {
+                    "num": 66,
+                    "level": 23,
+                    "color": "black",
+                    "parents": [
+                        63
+                    ],
+                    "neighbors": [
+                        65,
+                        67
+                    ],
+                    "childrens": [
+                        69
+                    ]
+                },
+                {
+                    "num": 67,
+                    "level": 23,
+                    "color": "black",
+                    "parents": [
+                        62
+                    ],
+                    "neighbors": [
+                        66
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 68,
+                    "level": 24,
+                    "color": "black",
+                    "parents": [
+                        65
+                    ],
+                    "neighbors": [
+                        69
+                    ],
+                    "childrens": [
+                        70
+                    ]
+                },
+                {
+                    "num": 69,
+                    "level": 24,
+                    "color": "black",
+                    "parents": [
+                        66
+                    ],
+                    "neighbors": [
+                        68
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 70,
+                    "level": 25,
+                    "color": "black",
+                    "parents": [
+                        68
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        71
+                    ]
+                },
+                {
+                    "num": 71,
+                    "level": 26,
+                    "color": "black",
+                    "parents": [
+                        70
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        72,
+                        73
+                    ]
+                },
+                {
+                    "num": 72,
+                    "level": 27,
+                    "color": "black",
+                    "parents": [
+                        71
+                    ],
+                    "neighbors": [
+                        73
+                    ],
+                    "childrens": [
+                        74,
+                        75
+                    ]
+                },
+                {
+                    "num": 73,
+                    "level": 27,
+                    "color": "black",
+                    "parents": [
+                        71
+                    ],
+                    "neighbors": [
+                        72
+                    ],
+                    "childrens": [
+                        76
+                    ]
+                },
+                {
+                    "num": 74,
+                    "level": 28,
+                    "color": "black",
+                    "parents": [
+                        72
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        77,
+                        78,
+                        79
+                    ]
+                },
+                {
+                    "num": 75,
+                    "level": 28,
+                    "color": "black",
+                    "parents": [
+                        72
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        78
+                    ]
+                },
+                {
+                    "num": 76,
+                    "level": 28,
+                    "color": "black",
+                    "parents": [
+                        73
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        79,
+                        80
+                    ]
+                },
+                {
+                    "num": 77,
+                    "level": 29,
+                    "color": "black",
+                    "parents": [
+                        74
+                    ],
+                    "neighbors": [
+                        78
+                    ],
+                    "childrens": [
+                        81
+                    ]
+                },
+                {
+                    "num": 78,
+                    "level": 29,
+                    "color": "black",
+                    "parents": [
+                        74,
+                        75
+                    ],
+                    "neighbors": [
+                        77
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 79,
+                    "level": 29,
+                    "color": "black",
+                    "parents": [
+                        76,
+                        74
+                    ],
+                    "neighbors": [
+                        80
+                    ],
+                    "childrens": [
+                        81
+                    ]
+                },
+                {
+                    "num": 80,
+                    "level": 29,
+                    "color": "black",
+                    "parents": [
+                        76
+                    ],
+                    "neighbors": [
+                        79
+                    ],
+                    "childrens": [
+                        81,
+                        82
+                    ]
+                },
+                {
+                    "num": 81,
+                    "level": 30,
+                    "color": "black",
+                    "parents": [
+                        79,
+                        80,
+                        77
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        84,
+                        86,
+                        87
+                    ]
+                },
+                {
+                    "num": 82,
+                    "level": 30,
+                    "color": "black",
+                    "parents": [
+                        80
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        83,
+                        85
+                    ]
+                },
+                {
+                    "num": 83,
+                    "level": 31,
+                    "color": "black",
+                    "parents": [
+                        82
+                    ],
+                    "neighbors": [
+                        84
+                    ],
+                    "childrens": [
+                        88
+                    ]
+                },
+                {
+                    "num": 84,
+                    "level": 31,
+                    "color": "black",
+                    "parents": [
+                        81
+                    ],
+                    "neighbors": [
+                        83
+                    ],
+                    "childrens": [
+                        88
+                    ]
+                },
+                {
+                    "num": 85,
+                    "level": 31,
+                    "color": "black",
+                    "parents": [
+                        82
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 86,
+                    "level": 31,
+                    "color": "black",
+                    "parents": [
+                        81
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        88
+                    ]
+                },
+                {
+                    "num": 87,
+                    "level": 31,
+                    "color": "black",
+                    "parents": [
+                        81
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 88,
+                    "level": 32,
+                    "color": "black",
+                    "parents": [
+                        83,
+                        84,
+                        86
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        89
+                    ]
+                },
+                {
+                    "num": 89,
+                    "level": 33,
+                    "color": "black",
+                    "parents": [
+                        88
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        90,
+                        91,
+                        92,
+                        93
+                    ]
+                },
+                {
+                    "num": 90,
+                    "level": 34,
+                    "color": "black",
+                    "parents": [
+                        89
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 91,
+                    "level": 34,
+                    "color": "black",
+                    "parents": [
+                        89
+                    ],
+                    "neighbors": [
+                        92
+                    ],
+                    "childrens": [
+                        94
+                    ]
+                },
+                {
+                    "num": 92,
+                    "level": 34,
+                    "color": "black",
+                    "parents": [
+                        89
+                    ],
+                    "neighbors": [
+                        91
+                    ],
+                    "childrens": [
+                        94,
+                        95
+                    ]
+                },
+                {
+                    "num": 93,
+                    "level": 34,
+                    "color": "black",
+                    "parents": [
+                        89
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 94,
+                    "level": 35,
+                    "color": "black",
+                    "parents": [
+                        92,
+                        91
+                    ],
+                    "neighbors": [
+                        95
+                    ],
+                    "childrens": [
+                        96,
+                        97,
+                        98
+                    ]
+                },
+                {
+                    "num": 95,
+                    "level": 35,
+                    "color": "black",
+                    "parents": [
+                        92
+                    ],
+                    "neighbors": [
+                        94
+                    ],
+                    "childrens": [
+                        97
+                    ]
+                },
+                {
+                    "num": 96,
+                    "level": 36,
+                    "color": "black",
+                    "parents": [
+                        94
+                    ],
+                    "neighbors": [
+                        97
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 97,
+                    "level": 36,
+                    "color": "black",
+                    "parents": [
+                        95,
+                        94
+                    ],
+                    "neighbors": [
+                        96
+                    ],
+                    "childrens": [
+                        99
+                    ]
+                },
+                {
+                    "num": 98,
+                    "level": 36,
+                    "color": "black",
+                    "parents": [
+                        94
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 99,
+                    "level": 37,
+                    "color": "black",
+                    "parents": [
+                        97
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        100,
+                        101
+                    ]
+                },
+                {
+                    "num": 100,
+                    "level": 38,
+                    "color": "black",
+                    "parents": [
+                        99
+                    ],
+                    "neighbors": [
+                        101
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 101,
+                    "level": 38,
+                    "color": "black",
+                    "parents": [
+                        99
+                    ],
+                    "neighbors": [
+                        100
+                    ],
+                    "childrens": [
+                        102,
+                        103,
+                        104
+                    ]
+                },
+                {
+                    "num": 102,
+                    "level": 39,
+                    "color": "black",
+                    "parents": [
+                        101
+                    ],
+                    "neighbors": [
+                        103
+                    ],
+                    "childrens": [
+                        106,
+                        107,
+                        108
+                    ]
+                },
+                {
+                    "num": 103,
+                    "level": 39,
+                    "color": "black",
+                    "parents": [
+                        101
+                    ],
+                    "neighbors": [
+                        102
+                    ],
+                    "childrens": [
+                        105,
+                        106,
+                        108
+                    ]
+                },
+                {
+                    "num": 104,
+                    "level": 39,
+                    "color": "black",
+                    "parents": [
+                        101
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        105,
+                        106,
+                        107
+                    ]
+                },
+                {
+                    "num": 105,
+                    "level": 40,
+                    "color": "black",
+                    "parents": [
+                        103,
+                        104
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 106,
+                    "level": 40,
+                    "color": "black",
+                    "parents": [
+                        103,
+                        102,
+                        104
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 107,
+                    "level": 40,
+                    "color": "black",
+                    "parents": [
+                        102,
+                        104
+                    ],
+                    "neighbors": [
+                        108
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 108,
+                    "level": 40,
+                    "color": "black",
+                    "parents": [
+                        103,
+                        102
+                    ],
+                    "neighbors": [
+                        107
+                    ],
+                    "childrens": []
+                }
+            ],
+            "name": "example 42 a 41"
+        },
+        {
+            "height": 5,
+            "node": [
+                {
+                    "num": 0,
+                    "level": 0,
+                    "color": "red",
+                    "parents": [],
+                    "neighbors": [],
+                    "childrens": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                {
+                    "num": 1,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 2,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [
+                        3
+                    ],
+                    "childrens": [
+                        4
+                    ]
+                },
+                {
+                    "num": 3,
+                    "level": 1,
+                    "color": "black",
+                    "parents": [
+                        0
+                    ],
+                    "neighbors": [
+                        2
+                    ],
+                    "childrens": [
+                        4
+                    ]
+                },
+                {
+                    "num": 4,
+                    "level": 2,
+                    "color": "black",
+                    "parents": [
+                        3,
+                        2
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        5,
+                        6,
+                        7,
+                        8,
+                        9
+                    ]
+                },
+                {
+                    "num": 5,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        4
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 6,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        4
+                    ],
+                    "neighbors": [
+                        7
+                    ],
+                    "childrens": [
+                        10
+                    ]
+                },
+                {
+                    "num": 7,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        4
+                    ],
+                    "neighbors": [
+                        6
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 8,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        4
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        10
+                    ]
+                },
+                {
+                    "num": 9,
+                    "level": 3,
+                    "color": "black",
+                    "parents": [
+                        4
+                    ],
+                    "neighbors": [],
+                    "childrens": []
+                },
+                {
+                    "num": 10,
+                    "level": 4,
+                    "color": "black",
+                    "parents": [
+                        6,
+                        8
+                    ],
+                    "neighbors": [],
+                    "childrens": [
+                        11,
+                        12,
+                        13
+                    ]
+                },
+                {
+                    "num": 11,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        10
+                    ],
+                    "neighbors": [
+                        12
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 12,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        10
+                    ],
+                    "neighbors": [
+                        11,
+                        13
+                    ],
+                    "childrens": []
+                },
+                {
+                    "num": 13,
+                    "level": 5,
+                    "color": "black",
+                    "parents": [
+                        10
+                    ],
+                    "neighbors": [
+                        12
+                    ],
+                    "childrens": []
+                }
+            ],
+            "name": "heur mieux que  sda"
         }
     ]
 }

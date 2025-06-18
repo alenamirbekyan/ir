@@ -5,7 +5,7 @@ import tkinter as TK
 from method.heuristic import Heuristic
 from method.sda import SDA
 from save import *
-from summit import generate_graph, shortest_path_tree, generate_scatter_plot
+from summit import generate_graph, shortest_path_tree, generate_scatter_plot, lose_time_summit
 
 # Default values
 size = 5
@@ -31,6 +31,7 @@ graph = None
 coordinates = {}
 solution = {}
 iteration = 0
+shortest_path = None
 
 # Dropdown for method
 method_var = TK.StringVar(root)
@@ -104,7 +105,7 @@ def draw_edge(node1, node2, label, color="black"):
         pen.write(label, align="center")
 
 def generate(from_load=False):
-    global graph, solution, iteration, size, per_level, coordinates, max_solution
+    global graph, solution, iteration, size, per_level, coordinates, max_solution, shortest_path
 
     try:
         size = int(size_entry.get())
@@ -297,8 +298,16 @@ def jump_start(event):
     draw()
 
 def recuit():
-    global solution, graph
-    pass
+    global solution, graph, max_solution, iteration
+    info = lose_time_summit(solution, graph)
+    solution = graph.resolution(shortest_path, method, info[1])
+    if solution is None:
+        print("No transmission plan found.")
+        solution = {}
+    else:
+        max_solution = max(solution.keys())
+        iteration = max_solution
+        draw()
 
 easter_egg_state = 0
 def easter_egg(event):
