@@ -101,5 +101,4 @@ class SDA(Methode):
                 node.color = "black"
                 print(f"Blocked or inactive node: {node.num}")"""
 
-        print("SDA protocol completed.")
         return solution
