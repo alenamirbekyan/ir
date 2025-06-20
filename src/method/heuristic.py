@@ -38,7 +38,6 @@ class Heuristic(Methode):
             if(len(possible_node) == 0):
                 return None
             random_node = possible_node[randint(0, len(possible_node)-1)]
-            print(random_node)
             solution[0] = [(recuit[0], random_node)]
             sent.add(recuit[0])
             occupied_receivers.add(recuit[0])

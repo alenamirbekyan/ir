@@ -6,7 +6,7 @@ from random import random
 from method.heuristic import Heuristic
 from method.sda import SDA
 from save import *
-from summit import generate_graph, shortest_path_tree, generate_scatter_plot, lose_time_summit
+from summit import generate_graph, shortest_path_tree, generate_scatter_plot, lose_time_summit, recuit_simule
 
 # Default values
 size = 5
@@ -256,9 +256,11 @@ def save_graph():
     TK.Button(popup, text="Save", command=confirm).pack(pady=10)
 
 def load_graph(index):
-    global graph, iteration
+    global graph, iteration, size
     graph = load(index)
     iteration = 0
+    size_entry.delete(0)
+    size_entry.insert(0, str(graph.height))
     generate(True)
 
 def load_list():
@@ -282,7 +284,7 @@ def scroll_down(event): canvas.yview_scroll(10, "units")
 def scroll_mouse(event): canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 def step_forward(event):
     global iteration
-    if solution and iteration < max_solution:
+    if solution and iteration < max_solution-1:
         iteration += 1
         draw()
 def step_backward(event):
@@ -303,35 +305,18 @@ def jump_start(event):
 
 def recuit():
     global solution, graph, max_solution, iteration
-    best_solution = solution
-    best_max_solution = max_solution
-    for i in range(500):
-        info = lose_time_summit(solution, graph)
-        new_solution = graph.resolution(shortest_path, method, info[1])
-        if new_solution is None:
-            print("No transmission plan found.")
-            solution = {}
-        else:
-            new_max_solution = max(new_solution.keys())+1
-            iteration = new_max_solution
-            delta = new_max_solution - max_solution
-            if delta<0:
-                best_solution = new_solution
-                best_max_solution = new_max_solution
-                solution = new_solution
-                max_solution = new_max_solution
-            elif random() > 0.5:
-                solution = new_solution
-                max_solution = new_max_solution
+    res = recuit_simule(solution, graph, max_solution, shortest_path, method)
 
-    solution = best_solution
-    max_solution = best_max_solution
+    solution = res[0]
+    max_solution = res[1]
+    iteration = max_solution-1
     print("fini")
     draw()
 
 easter_egg_state = [{"indice":0, "text": "bakadam", "img":"../img/adam.png"},
                     {"indice":0, "text": "mario", "img":"../img/mario.png"},
-                    {"indice":0, "text": "antoinette", "img":"../img/mario.png"}]
+                    {"indice":0, "text": "antoinette", "img":"../img/mario.png"},
+                    {"indice":0, "text": "bananebit", "img":"../img/chien.png"}]
 def easter_egg(event):
     global easter_egg_state
     for easter_egg in easter_egg_state:
@@ -346,6 +331,9 @@ def easter_egg(event):
 
             canvas.create_image(0, 0, image=image)
             canvas.image = image
+
+def generate_better_possible():
+    pass
 
 # UI Layout
 TK.Button(root, text="Save", command=save_graph).grid(column=0, row=0)
@@ -370,6 +358,7 @@ left_container.grid(column = 1, row=0)
 max_label.grid(column = 0, row=0)
 
 TK.Button(left_container, text="recuit simulé", command=recuit).grid(column=0, row=1)
+TK.Button(left_container, text="generer graph amelioration possible", command=generate_better_possible).grid(column=0, row=2)
 
 # Bindings
 canvas.bind_all("<Up>", scroll_up)

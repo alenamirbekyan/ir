@@ -1,8 +1,6 @@
 import math
-from math import trunc
-from random import randint
-import random
-
+from random import randint, random
+import random as rand
 
 class Graph:
     def __init__(self, nodes, height):
@@ -240,8 +238,8 @@ def generate_scatter_plot(total_nodes, r):
     for i in range(1,total_nodes):
         # s = randint(0, i-1)
         s = i-1
-        corner = random.uniform(0, 2 * math.pi)
-        radius = r * math.sqrt(random.uniform(0.3, 1))  # sqrt pour une densité uniforme
+        corner = rand.uniform(0, 2 * math.pi)
+        radius = r * math.sqrt(rand.uniform(0.3, 1))  # sqrt pour une densité uniforme
         x2 = summit[s][0] + radius * math.cos(corner)
         y2 = summit[s][1] + radius * math.sin(corner)
         summit[i] = (x2,y2)
@@ -284,3 +282,27 @@ def lose_time_summit(solution, graph):
                 res = couple
     # print((late, res))
     return (late, res)
+
+
+def recuit_simule(solution, graph, max_solution, shortest_path, method):
+    best_solution = solution
+    best_max_solution = max_solution
+    for i in range(500):
+        info = lose_time_summit(solution, graph)
+        new_solution = graph.resolution(shortest_path, method, info[1])
+        if new_solution is None:
+            print("No transmission plan found.")
+            solution = {}
+        else:
+            new_max_solution = max(new_solution.keys())+1
+            iteration = new_max_solution
+            delta = new_max_solution - max_solution
+            if delta<0:
+                best_solution = new_solution
+                best_max_solution = new_max_solution
+                solution = new_solution
+                max_solution = new_max_solution
+            elif random() > 0.5:
+                solution = new_solution
+                max_solution = new_max_solution
+    return (best_solution, best_max_solution)
