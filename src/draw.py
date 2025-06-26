@@ -5,6 +5,8 @@ from random import random
 
 from method.heuristic import Heuristic
 from method.sda import SDA
+from method.visited import Visited
+from method.csp import Csp
 from save import *
 from summit import generate_graph, shortest_path_tree, generate_scatter_plot, lose_time_summit, recuit_simule
 
@@ -46,11 +48,15 @@ def update_method(*args):
         method = Heuristic()
     elif selected == "SDA":
         method = SDA()
+    elif selected == "Visited":
+        method = Visited()
+    elif selected == "Csp":
+        method = Csp()
     if graph:
         generate(True)
 
 method_var.trace_add("write", lambda *args: update_method())
-method_menu = TK.OptionMenu(root, method_var, "Heuristic", "SDA")
+method_menu = TK.OptionMenu(root, method_var, "Heuristic", "SDA", "Visited", "Csp")
 
 # Dropdown for generation mode
 generation_mode = TK.StringVar(root)
@@ -122,7 +128,7 @@ def generate(from_load=False):
         if generation_mode.get() == "Level-Based":
             graph = generate_graph(size, per_level)
         else:
-            res = generate_scatter_plot(size, 100)
+            res = generate_scatter_plot(size, 200)
             graph = res[1]
             coordinates = res[0]
 
@@ -313,10 +319,13 @@ def recuit():
     print("fini")
     draw()
 
+
 easter_egg_state = [{"indice":0, "text": "bakadam", "img":"../img/adam.png"},
                     {"indice":0, "text": "mario", "img":"../img/mario.png"},
                     {"indice":0, "text": "antoinette", "img":"../img/mario.png"},
                     {"indice":0, "text": "bananebit", "img":"../img/chien.png"}]
+
+
 def easter_egg(event):
     global easter_egg_state
     for easter_egg in easter_egg_state:

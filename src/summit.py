@@ -168,63 +168,6 @@ def shortest_path_tree(graph, root_node, connection, used_childrens):
             connection = shortest_path_tree(graph, graph.nodes[child_id], connection, used_childrens)
     return connection
 
-# def generate_graph_by_nodes(total_nodes):
-#     """
-#     Generate a hierarchical graph with a fixed number of nodes (including sink at level 0).
-#     The levels and node distributions are randomly chosen.
-#     Ensures that every level up to the last has at least one node.
-#     """
-#     if total_nodes < 1:
-#         raise ValueError("Total nodes must be at least 1.")
-#
-#     num = 0
-#     graph = []
-#
-#     # Sink node at level 0
-#     root = Node(0, num)
-#     root.color = "red"
-#     graph.append(root)
-#
-#     num += 1
-#     current_level = 1
-#
-#     while num < total_nodes:
-#         nodes_this_level = min(randint(1, 5), total_nodes - num)
-#         start_index = len(graph)
-#
-#         previous = None
-#         for _ in range(nodes_this_level):
-#             node = Node(current_level, num)
-#             graph.append(node)
-#             if previous and randint(0, 2) == 2:
-#                 node.add_neighbor(previous)
-#             previous = node
-#             num += 1
-#
-#         for i in range(start_index, len(graph)):
-#             current_node = graph[i]
-#             parent_count = randint(1, min(3, start_index))
-#             linked = set()
-#             for _ in range(parent_count):
-#                 parent = graph[randint(0, start_index - 1)]
-#                 if parent.num not in linked:
-#                     current_node.add_parent(parent)
-#                     linked.add(parent.num)
-#
-#         current_level += 1
-#
-#     # ─────────────────────────────────────
-#     # Ensure that all levels exist (safety)
-#     # ─────────────────────────────────────
-#     used_levels = {node.level for node in graph}
-#     for lvl in range(current_level):
-#         if lvl not in used_levels:
-#             num += 1
-#             missing = Node(lvl, num)
-#             graph.append(missing)
-#     graph.sort(key=lambda node: node.level)
-#     return Graph(graph, current_level)
-
 
 def generate_scatter_plot(total_nodes, r):
     num = 0
@@ -287,22 +230,33 @@ def lose_time_summit(solution, graph):
 def recuit_simule(solution, graph, max_solution, shortest_path, method):
     best_solution = solution
     best_max_solution = max_solution
-    for i in range(500):
-        info = lose_time_summit(solution, graph)
-        new_solution = graph.resolution(shortest_path, method, info[1])
-        if new_solution is None:
-            print("No transmission plan found.")
-            solution = {}
-        else:
-            new_max_solution = max(new_solution.keys())+1
-            iteration = new_max_solution
-            delta = new_max_solution - max_solution
-            if delta<0:
-                best_solution = new_solution
-                best_max_solution = new_max_solution
-                solution = new_solution
-                max_solution = new_max_solution
-            elif random() > 0.5:
-                solution = new_solution
-                max_solution = new_max_solution
+    blocking_points = []
+    if(max_solution > math.ceil(math.log2(len(graph.nodes))) and max_solution > graph.height):
+        for i in range(500):
+            info = lose_time_summit(solution, graph)
+            if info[1] and not info[1] in blocking_points:
+                blocking_points.append(info[1])
+                new_solution = graph.resolution(shortest_path, method, blocking_points)
+                if new_solution is None:
+                    solution = {}
+                    blocking_points.remove(info[1])
+                else:
+                    new_max_solution = max(new_solution.keys())+1
+                    iteration = new_max_solution
+                    delta = new_max_solution - max_solution
+                    if delta<0:
+                        best_solution = new_solution
+                        best_max_solution = new_max_solution
+                        solution = new_solution
+                        max_solution = new_max_solution
+                        if (max_solution == math.ceil(math.log2(len(graph.nodes))) or max_solution == graph.height):
+                            print("meillieur apres calcul " + str(i))
+                            return (best_solution, best_max_solution)
+                    elif random() > 0.5:
+                        solution = new_solution
+                        max_solution = new_max_solution
+                    else:
+                        blocking_points.remove(info[1])
+    else:
+        print("pas d'ammelioration possible")
     return (best_solution, best_max_solution)

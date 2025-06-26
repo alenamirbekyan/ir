@@ -10,16 +10,6 @@ class Heuristic(Methode):
         children_score = {}
 
         # Step 1: Compute a score for each node to guide priority
-        for node in graph.nodes:
-            # Weighted score: more children (×5), neighbors, and parents
-            children_score[node.num] = (
-                len(node.get_childrens()) * 5 +
-                len(node.get_neighbors()) +
-                len(node.get_parents())
-            )
-
-        # Step 2: Sort nodes by increasing score (lowest priority first)
-        sorted_nodes = dict(sorted(children_score.items(), key=lambda item: item[1]))
 
         sent = set()
         slot = 0
@@ -27,24 +17,42 @@ class Heuristic(Methode):
 
         first = False
 
-        if recuit:
-            node = graph.nodes[recuit[0]]
-            possible_node = node.get_childrens() + node.get_neighbors() + node.get_parents()
-            possible_node.remove(recuit[1])
-            for n_id in possible_node:
-                n = graph.nodes[n_id]
-                if len(n.get_childrens() + n.get_neighbors() + n.get_parents()) == 1:
-                    possible_node.remove(n_id)
-            if(len(possible_node) == 0):
-                return None
-            random_node = possible_node[randint(0, len(possible_node)-1)]
-            solution[0] = [(recuit[0], random_node)]
-            sent.add(recuit[0])
-            occupied_receivers.add(recuit[0])
-            occupied_receivers.add(random_node)
-            graph.nodes[recuit[0]].textOnSend = 0
-            graph.nodes[recuit[0]].receiver = random_node
-            first = True
+        if recuit and len(recuit) > 0:
+            solution[0] = []
+            for improvement in recuit:
+                node = graph.nodes[improvement[0]]
+                possible_node = node.get_childrens() + node.get_neighbors() + node.get_parents()
+                possible_node.remove(improvement[1])
+                elem_to_remove = []
+                for n_id in possible_node:
+                    n = graph.nodes[n_id]
+                    if len(n.get_childrens() + n.get_neighbors() + n.get_parents()) == 1:
+                        elem_to_remove.append(n_id)
+                    elif n_id in sent or n_id in occupied_receivers:
+                        elem_to_remove.append(n_id)
+                possible_node = list(set(possible_node) - set(elem_to_remove))
+                if(len(possible_node) == 0):
+                    return None
+                random_node = possible_node[randint(0, len(possible_node)-1)]
+                solution[0].append((improvement[0], random_node))
+                sent.add(improvement[0])
+                occupied_receivers.add(improvement[0])
+                occupied_receivers.add(random_node)
+                graph.nodes[improvement[0]].textOnSend = 0
+                graph.nodes[improvement[0]].receiver = random_node
+                first = True
+
+        for node in graph.nodes:
+            # Weighted score: more children (×5), neighbors, and parents
+            children_score[node.num] = (
+                len(list(set(node.get_childrens()) - set(occupied_receivers))) * 5 +
+                len(node.get_neighbors()) +
+                len(node.get_parents())
+            )
+
+
+        # Step 2: Sort nodes by increasing score (lowest priority first)
+        sorted_nodes = dict(sorted(children_score.items(), key=lambda item: item[1]))
 
         # Step 3: Slot-based scheduling
         iteration = 0
