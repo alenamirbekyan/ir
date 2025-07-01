@@ -21,15 +21,12 @@ class Csp(Methode):
                 random_parent = parents[randint(0, len(parents) - 1)]
                 solution.setdefault(slot, []).append((node, random_parent))
 
-        print("[CSP] Solution initiale :", solution)
-
         solution = self.reparer_collisions(solution)
         solution = self.reparer_precedence(solution, graph)
-        solution = self.reparer_chevauchement(solution)  # ⬅️ ajout ici
+        solution = self.reparer_chevauchement(solution)
         return solution
 
     def reparer_collisions(self, solution):
-        print("\n[CSP] Correction des collisions")
         new_solution = defaultdict(list)
         used = defaultdict(set)
 
@@ -40,7 +37,6 @@ class Csp(Methode):
                     s += 1
                 new_solution[s].append((node, parent))
                 used[s].add(parent)
-                print(f"  ➤ Node {node} → Parent {parent} assigné au slot {s}")
 
         return dict(new_solution)
 
@@ -61,7 +57,6 @@ class Csp(Methode):
         return None
 
     def reparer_precedence(self, solution, graph):
-        print("\n[CSP] Correction des précédences")
         modified = True
 
         while modified:
@@ -87,7 +82,6 @@ class Csp(Methode):
                 if transmission:
                     solution[current_slot].remove(transmission)
                     new_slot = current_slot + 1
-                    print(f"  🔁 Node {node_num} déplacé de slot {current_slot} à {new_slot} (précédence)")
                     while any(p == transmission[1] for (n, p) in solution.get(new_slot, [])):
                         new_slot += 1
                     solution.setdefault(new_slot, []).append(transmission)
@@ -97,7 +91,6 @@ class Csp(Methode):
         return solution
 
     def reparer_chevauchement(self, solution):
-        print("\n[CSP] Correction des chevauchements")
         new_solution = defaultdict(list)
         used = defaultdict(lambda: defaultdict(list))  # used[slot][parent] = [nodes]
 
@@ -108,6 +101,4 @@ class Csp(Methode):
                     s += 1
                 new_solution[s].append((node, parent))
                 used[s][parent].append(node)
-                print(f"  ↪️ Node {node} → Parent {parent} assigné au slot {s} (chevauchement évité)")
-
         return dict(new_solution)

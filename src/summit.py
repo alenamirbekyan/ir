@@ -250,7 +250,7 @@ def recuit_simule(solution, graph, max_solution, shortest_path, method):
                         solution = new_solution
                         max_solution = new_max_solution
                         if (max_solution == math.ceil(math.log2(len(graph.nodes))) or max_solution == graph.height):
-                            print("meillieur apres calcul " + str(i))
+                            # print("meillieur apres calcul " + str(i))
                             return (best_solution, best_max_solution)
                     elif random() > 0.5:
                         solution = new_solution
@@ -258,5 +258,6 @@ def recuit_simule(solution, graph, max_solution, shortest_path, method):
                     else:
                         blocking_points.remove(info[1])
     else:
-        print("pas d'ammelioration possible")
+        pass
+        # print("pas d'ammelioration possible")
     return (best_solution, best_max_solution)

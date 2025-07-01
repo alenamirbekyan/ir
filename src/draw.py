@@ -4,6 +4,7 @@ import tkinter as TK
 from random import random
 
 from method.heuristic import Heuristic
+from method.metropolis import metropolis_2
 from method.sda import SDA
 from method.visited import Visited
 from method.csp import Csp
@@ -138,7 +139,7 @@ def generate(from_load=False):
         print("Shortest path is empty. The graph may be malformed.")
         solution = {}
         return
-
+    solution = {}
     solution = graph.resolution(shortest_path, method)
     if solution is None:
         print("No transmission plan found.")
@@ -311,12 +312,12 @@ def jump_start(event):
 
 def recuit():
     global solution, graph, max_solution, iteration
+    method = Heuristic()
     res = recuit_simule(solution, graph, max_solution, shortest_path, method)
 
     solution = res[0]
     max_solution = res[1]
     iteration = max_solution-1
-    print("fini")
     draw()
 
 
@@ -341,8 +342,36 @@ def easter_egg(event):
             canvas.create_image(0, 0, image=image)
             canvas.image = image
 
-def generate_better_possible():
-    pass
+def generate_stats():
+    taille = [1000]
+    # taille = [10, 50, 100, 500]
+
+    heuristique = {"heuristique" : Heuristic(), "sda" : SDA(), "visited" : Visited(), "csp" : Csp()}
+    res = {}
+    for t in taille:
+        res[t] = {}
+        first = True
+        print("etape " + str(t))
+        for i in range(20):
+            graph = generate_scatter_plot(t, 200)[1]
+            shortest_path = shortest_path_tree(graph, graph.nodes[0], [], [])
+            for method in heuristique.keys():
+                if( t == 1000):
+                    print(method)
+                if(first):
+                    res[t][method] = 0
+                    res[t]["recuit"+method] = 0
+                solution = graph.resolution(shortest_path, heuristique[method])
+                latence = max(solution.keys()) + 1
+                res[t][method] += latence
+                solution = recuit_simule(solution, graph, latence, shortest_path, Heuristic())[0]
+                latence = max(solution.keys()) + 1
+                res[t]["recuit"+method] += latence
+            first = False
+        for method in heuristique.keys():
+                res[t][method] = res[t][method]/20
+                res[t]["recuit" + method] = res[t]["recuit" + method]/20
+    print(res)
 
 # UI Layout
 TK.Button(root, text="Save", command=save_graph).grid(column=0, row=0)
@@ -367,7 +396,7 @@ left_container.grid(column = 1, row=0)
 max_label.grid(column = 0, row=0)
 
 TK.Button(left_container, text="recuit simulé", command=recuit).grid(column=0, row=1)
-TK.Button(left_container, text="generer graph amelioration possible", command=generate_better_possible).grid(column=0, row=2)
+TK.Button(left_container, text="effectuer des stats", command=generate_stats).grid(column=0, row=2)
 
 # Bindings
 canvas.bind_all("<Up>", scroll_up)
